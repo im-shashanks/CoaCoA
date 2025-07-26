@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coacoa"
+version = "0.1.0"
+description = "Context-Optimised Agentic Coding Assistant"
+authors = [
+  { name = "YOUR NAME", email = "your@email.com" }
+]
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
+dependencies = [
+  "typer>=0.9.0",
+  "importlib_resources>=6.0 ; python_version < '3.11'"
+]
+
+[project.scripts]
+coacoa = "coacoa.__main__:app"
+
+[tool.setuptools.package-data]
+"coacoa.scaffold" = ["**/*"]

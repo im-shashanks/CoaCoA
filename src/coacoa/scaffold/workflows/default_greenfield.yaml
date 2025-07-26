@@ -1,0 +1,10 @@
+stages:
+  - code-explorer          # produce CIS
+  - pm                     # PRD refresh
+  - ux_designer            # UX design
+  - po
+  - architect
+  - arch-integrity
+  - scrum-master
+  - dev
+  - qa

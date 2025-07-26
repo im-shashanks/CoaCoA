@@ -1,0 +1,11 @@
+stages:
+  - code-explorer          # produce CIS
+  - pm                     # PRD refresh
+  - ux_designer(optional)
+  - po
+  - architect
+  - arch-integrity         # run quality/architecture_integrity.md
+  - arch-integrity
+  - scrum-master
+  - dev
+  - qa
