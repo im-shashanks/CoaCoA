@@ -15,7 +15,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fretch-depth: 2
+          fetch-depth: 2
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
