@@ -1,111 +1,164 @@
 from __future__ import annotations
 
-import os
 import shutil
+import subprocess
 import sys
-import textwrap
 from pathlib import Path
 from typing import Optional
 
 import typer
-from importlib_resources import files
 
-app = typer.Typer(add_completion=False, help="CoaCoA CLI")
+# --------------------------------------------------------------------------- Typer app
+app = typer.Typer(add_completion=False,
+                  invoke_without_command=False,
+                  help="CoaCoA CLI – scaffold & helper utilities")
 
-template_dir = files("coacoa.scaffold")
 
-# -----------------------------------------------------------------------------
-# helpers
-# -----------------------------------------------------------------------------
+# --------------------------------------------------------------------------- helpers
 def git_root() -> Optional[Path]:
-    """Return git top-level dir or None if not in a git repo."""
-    import subprocess
-
+    """Return git top-level dir or None if not inside a git repo."""
     try:
-        root = subprocess.check_output(
-            ["git", "rev-parse", "--show-toplevel"],
-            stderr=subprocess.DEVNULL,
-            text=True,
-        ).strip()
+        root = (
+            subprocess.check_output(
+                ["git", "rev-parse", "--show-toplevel"],
+                stderr=subprocess.DEVNULL,
+                text=True,
+            )
+            .strip()
+        )
         return Path(root)
     except subprocess.CalledProcessError:
         return None
 
 
-def copy_tree(src: Path, dst: Path) -> None:
-    if dst.exists():
-        shutil.rmtree(dst)
-    shutil.copytree(src, dst)
+def copy_tree(src: Path, dst: Path, *, force: bool = False) -> None:
+    """
+    Copy scaffold tree **without** nuking user edits.
+
+    • If `dst` doesn’t exist   → normal copy.  
+    • If `dst` exists          → copy only files that are missing.  
+    • If a filename collides   → ask, unless `force=True`.
+    """
+    if not dst.exists():
+        shutil.copytree(src, dst)
+        return
+
+    # merge
+    for item in src.rglob("*"):
+        rel = item.relative_to(src)
+        target = dst / rel
+        if item.is_dir():
+            target.mkdir(parents=True, exist_ok=True)
+        else:
+            if target.exists():
+                if force or confirm(f"Overwrite {target}?"):
+                    shutil.copy2(item, target)
+            else:
+                shutil.copy2(item, target)
 
 
 def confirm(msg: str) -> bool:
     return typer.confirm(msg, default=True)
 
 
-# -----------------------------------------------------------------------------
-# `coacoa init` command
-# -----------------------------------------------------------------------------
-@app.command()
-def init(
-    claude_code: bool = typer.Option(
-        False, "--claude-code", help="Generate CLAUDE.md at repo root"
-    ),
-    cline: bool = typer.Option(
-        False, "--cline", help="Generate .clinerules at repo root"
-    ),
+# --------------------------------------------------------------------------- CLI command
+@app.command("init")
+def init_cmd(
+    claude_code: bool = typer.Option(False, "--claude-code"),
+    cline: bool = typer.Option(False, "--cline"),
 ):
     """
-    Scaffold CoaCoA into the current git repository.
+    Scaffold CoaCoA into the **current project directory**.
+
+    • If inside a Git repo, uses the repo root.<br>
+    • Otherwise, uses the present working directory.
     """
-    root = git_root()
-    if root is None:
-        typer.secho("Error: run inside a git repository", fg="red")
-        sys.exit(1)
+    root = git_root() or Path.cwd()
+
+    # Confirm when not in a git repo
+    if git_root() is None:
+        typer.secho("⚠  Not inside a git repository.", fg="yellow")
+        if not confirm(f"Proceed with workspace root '{root}'?"):
+            typer.secho("Init aborted.", fg="red")
+            sys.exit(1)
 
     typer.echo(f"Project root: {root}")
 
-    # ------------------------------------------------------------------ copy
-    template_dir = files("coacoa.templates")
-    copy_tree(template_dir, root / ".coacoa")
+    # locate scaffold inside package
+    try:
+        from importlib.resources import files
+    except ImportError:  # back-port for Py<3.11
+        from importlib_resources import files
+
+    scaffold_dir = Path(
+        str(files("coacoa.scaffold"))
+    )  # Traversable → concrete Path
+    copy_tree(scaffold_dir, root / ".coacoa", force=False)
+
+    # optional user-level override
+    override_yaml = root / "coacoa.yaml"
+    if not override_yaml.exists() and confirm("Create editable coacoa.yaml override at project root?"):
+        override_yaml.write_text("# Override CoaCoA settings here\n", encoding="utf-8")
+        typer.echo("✓ Created empty override coacoa.yaml (you can git-track this)")
     typer.secho("✓ Copied .coacoa scaffold", fg="green")
 
-    # ------------------------------------------------------------------ .gitignore
+    # --- update .gitignore
     gi_path = root / ".gitignore"
     gi_line = ".coacoa/\n"
     if gi_path.exists():
         with gi_path.open("r+", encoding="utf-8") as fp:
-            if gi_line not in fp.readlines():
+            lines = fp.readlines()
+            if gi_line not in lines:
                 if confirm("Append .coacoa/ to .gitignore?"):
                     fp.write(gi_line)
                     typer.echo("✓ Updated .gitignore")
     else:
-        gi_path.write_text(gi_line)
+        with gi_path.open("w", encoding="utf-8") as fp:
+            fp.write(gi_line)
         typer.echo("✓ Created .gitignore")
 
-    # ------------------------------------------------------------------ IDE helpers
-    if claude_code:
-        _write_helper(root, "CLAUDE.md", "claude.md")
-    if cline:
-        _write_helper(root, ".clinerules", "clinerules")
+    # --- IDE helper files
+    _maybe_write_helper(root, "CLAUDE.md", "claude.md", claude_code)
+    _maybe_write_helper(root, ".clinerules", "clinerules", cline)
 
     typer.secho("Init complete ✔", fg="green")
 
+from coacoa import __version__   # top of file already has __version__
 
-# -----------------------------------------------------------------------------
-def _write_helper(root: Path, filename: str, template_name: str) -> None:
+@app.command("version", help="Print CoaCoA package version")
+def version_cmd() -> None:
+    """Show CoaCoA version and exit."""
+    typer.echo(__version__)
+
+
+# --------------------------------------------------------------------------- helper writer
+def _maybe_write_helper(
+    root: Path, filename: str, template_name: str, enabled: bool
+) -> None:
+    if not enabled:
+        return
+
+    try:
+        from importlib.resources import files
+    except ImportError:
+        from importlib_resources import files
+
+    src = Path(str(files("coacoa.scaffold") / "ide_helpers" / template_name))
     dst = root / filename
-    src = files("coacoa.templates") / "ide_helpers" / template_name
+
     if dst.exists():
-        if not confirm(f"{filename} exists. Append CoaCoA commands?"):
+        if not confirm(f"{filename} exists. Append CoaCoA block?"):
             typer.echo(f"Skipped {filename}")
             return
-        # simple append
-        dst.write_text("\n" + src.read_text(encoding="utf-8"), encoding="utf-8", append=True)
+        with dst.open("a", encoding="utf-8") as d, src.open("r", encoding="utf-8") as s:
+            d.write("\n\n")            # blank line before our block
+            d.write(s.read())
         typer.echo(f"✓ Appended {filename}")
     else:
         shutil.copy(src, dst)
         typer.echo(f"✓ Created {filename}")
 
 
+# --------------------------------------------------------------------------- entry-point
 if __name__ == "__main__":
-    app()
+    app()  # important for `python -m coacoa`

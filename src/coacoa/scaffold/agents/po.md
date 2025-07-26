@@ -13,7 +13,7 @@ purpose: >
 
 inputs:
   - "{{cfg.prd.main}}"
-  - "{{cfg.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
+  - "{{cfg.docs.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
   - "(brownfield) {{cfg.paths.hotspots}}"
   - "{{cfg.paths.dependencies}}"
 outputs:

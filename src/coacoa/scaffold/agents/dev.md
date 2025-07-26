@@ -49,6 +49,8 @@ the required quality standards, without changing other code than necessary for y
 • New files created under the same component directory.
 All other files must remain byte-identical.
 7.	Adhere to existing module/API design; do not refactor unrelated code.
+8. Activate .venv or `{Virtual Environment}` in the project (source .venv/bin/activate).
+
 
 ### Core Responsibilities
 1. Implement story

@@ -10,6 +10,9 @@ Steps
    git switch -c feature/{{story_id}}
    ```
    If branch exists: git switch feature/{{story_id}}.
+   if not cfg.branching.auto_create:
+        log(\"➟ Skipping branch creation (auto_create=false)\")
+        return
 3. After Dev finishes and Build-OK: true is present, run:
     git add --all
     git status --short  # show to user

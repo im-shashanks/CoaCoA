@@ -13,14 +13,14 @@ purpose: >
   Maintain traceability and ensure story files are self-contained.
 
 inputs:
-  - "{{cfg.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
+  - "{{cfg.docs.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
   - "{{cfg.arch.main}}"
   - "{{cfg.paths.module_map}}"
   - "{{cfg.paths.dep_graph}}"
   - "{{cfg.paths.cycles}}"
   - "backlog.md"
 outputs:
-  - "{{cfg.prd.shard_dir}}/stories/{{cfg.file_prefixes.story}}*.md"
+  - "{{cfg.docs.prd.shard_dir}}/stories/{{cfg.file_prefixes.story}}*.md"
 depends_on:
   tasks:
     - tasks/generate_stories.md

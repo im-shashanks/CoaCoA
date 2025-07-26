@@ -12,7 +12,7 @@ _Assigned to: scrum-master agent_
 
 | Artefact | Purpose |
 |----------|---------|
-| `{{cfg.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md` | Source epics |
+| `{{cfg.docs.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md` | Source epics |
 | `{{cfg.arch.main}}` + shards | Component boundaries |
 | `{{cfg.paths.module_map}}` | Symbol lookup |
 | `{{cfg.paths.dep_graph}}` | For traceability links |
@@ -20,6 +20,15 @@ _Assigned to: scrum-master agent_
 | `backlog.md` | Epic ranking → story priority |
 
 ---
+
+### Pre-Process Dependencies
+1. Parse `backlog.md` under the `## Dependencies` header.  
+   → Build a dict `epic_blockers = {"e_003": ["e_002"], "e_004":["e_002","e_003"], …}`
+
+### Shard & Emit Stories
+2. For each epic shard → create `s_*.md` and add YAML key  
+   `depends_on: [ <story_ids of blocker epics> ]`  
+   (use the **final story ID** of each blocker epic, e.g. `s_002_last`).
 
 ## 1 · Story ID & file naming
 

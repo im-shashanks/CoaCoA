@@ -13,12 +13,12 @@
 
 | Config key                                  | Expected value / example                    |
 |---------------------------------------------|---------------------------------------------|
-| `coa.paths.analysis`                        | `context/analysis.md`                       |
-| `coa.paths.module_map`                      | `context/intelligence/module_map.json`      |
-| `coa.paths.dep_graph`                       | `context/intelligence/dep_graph.json`       |
-| `coa.paths.complexity`                      | `context/intelligence/complexity.json`      |
-| `coa.paths.hotspots`                        | `context/intelligence/hotspots.json`        |
-| `coa.paths.coverage`                        | `context/intelligence/coverage.json`        |
+| `coa.paths.analysis`                        | `.coacoa/context/analysis.md`                       |
+| `coa.paths.module_map`                      | `.coacoa/context/intelligence/module_map.json`      |
+| `coa.paths.dep_graph`                       | `.coacoa/context/intelligence/dep_graph.json`       |
+| `coa.paths.complexity`                      | `.coacoa/context/intelligence/complexity.json`      |
+| `coa.paths.hotspots`                        | `.coacoa/context/intelligence/hotspots.json`        |
+| `coa.paths.coverage`                        | `.coacoa/context/intelligence/coverage.json`        |
 | `coa.limits.max_tokens_context`             | Prompt budget for any summarisation step    |
 | Exclude globs                               | `.git/ , coacoa/ , **/dist , **/node_modules` (hard-coded) |
 
@@ -89,6 +89,17 @@
          "test":  "brazil-test unit",
          "lint":  "python -m ruff",
          "run":   "brazil-run LocalMain"
+         }
+      }
+      {
+      "ecosystem": "python",
+      "detected_files": ["pyproject.toml", ".venv"],
+      "commands": {
+         "build": "${VENV}/bin/pip install -e .[dev]",
+         "test":  "${VENV}/bin/pytest -q",
+         "lint":  "${VENV}/bin/python -m ruff",
+         "type":  "${VENV}/bin/mypy --strict src/",
+         "run":   "${VENV}/bin/python -m src.coacoa.__main__ --help"
          }
       }
    ```

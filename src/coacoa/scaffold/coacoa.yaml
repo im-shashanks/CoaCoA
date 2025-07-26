@@ -1,0 +1,80 @@
+# coacoa/coacoa.yaml  —  v0.1.0-beta  (BMAD-compatible superset)
+coa:
+
+  # ---------- PATHS ----------
+  paths:
+    analysis:        .coacoa/context/analysis.md
+    module_map:      .coacoa/context/intelligence/module_map.json
+    dep_graph:       .coacoa/context/intelligence/dep_graph.json
+    dependencies:    .coacoa/context/intelligence/dependencies.json
+    cycles:          .coacoa/context/intelligence/cycles.json
+    complexity:      .coacoa/context/intelligence/complexity.json
+    hotspots:        .coacoa/context/intelligence/hotspots.json
+    coverage:        .coacoa/context/intelligence/coverage.json
+    build_info:      .coacoa/context/intelligence/build_info.json   
+    docs_dir:        .coacoa/docs/
+    adr_dir:         .coacoa/docs/adr/                 # Architecture Decision Records
+
+  # ---------- PRD ----------
+  prd:
+    main:            .coacoa/docs/prd.md
+    sharded:         true
+    shard_dir:       .coacoa/docs/prd
+
+  # ---------- UI / UX ----------
+  templates:
+    ui_ux:           .coacoa/templates/ui_ux.md       # Green- & brown-field reference
+
+  # ---------- ARCHITECTURE ----------
+  arch:
+    main:            .coacoa/docs/architecture.md
+    sharded:         true
+    shard_dir:       .coacoa/docs/architecture
+
+  # ---------- FILE PREFIXES ----------
+  file_prefixes:
+    story:           "s_"
+    epic:            "e_"
+    domain_doc:      "d_"
+
+  # ---------- DATA (shared knowledge) ----------
+  data:
+    tech_prefs:      .coacoa/data/tech_preferences.md
+    style_guides:    .coacoa/data/style_guides/
+    pattern_library: .coacoa/data/pattern_library/
+    language_rules:  .coacoa/data/language_rules.md
+
+  # ---------- WORKFLOWS ----------
+  workflows:
+    greenfield:      .coacoa/workflows/default_greenfield.yml
+    brownfield:      .coacoa/workflows/default_brownfield.yml
+
+  # ---------- QUALITY CHECKS ----------
+  quality:
+    anti_hallucination:   .coacoa/quality/anti_hallucination.md
+    link_integrity:       .coacoa/quality/link_integrity.md
+    qa:                   .coacoa/quality/qa.md
+    arch_integrity:       .coacoa/quality/architecture_integrity.md
+    build_integrity:      .coacoa/quality/build_integrity.md
+
+  # ---------- LIMITS ----------
+  limits:
+    max_snippet_loc:      120        # LOC injected per story
+    max_tokens_context:   12000      # Soft prompt budget
+    refactor_batch_size:  200        # LOC per refactor step
+
+  # ---------- BRANCHING ----------
+  branching:
+    brownfield_trigger:   .coacoa/context/analysis.md
+    auto_create:  true
+
+  # ---------- ORCHESTRATOR ----------
+  orchestrator:
+    parallel_stories:     3
+    retry_failed_tasks:   true
+
+  # ---------- LLM DEFAULTS ----------
+  llm:
+    default:       claude-sonnet-4.0
+    temperature:   0.2
+    top_p:         1.0

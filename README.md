@@ -1,5 +1,26 @@
-# CoaCoA v0.1 — Context-Optimised Agentic Coding Assistant  
-*“Drop it in, branch out, ship confidently.”*
+<!-- README header: paste ABOVE the existing content -->
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/im-shashanks/coacoa/main/.github/banner.svg" alt="CoaCoA logo" width="550">
+</p>
+
+<p align="center">
+  <a href="https://pypi.org/project/coacoa/">
+    <img src="https://img.shields.io/pypi/v/coacoa.svg?color=blue&logo=pypi&label=PyPI%20Version" alt="PyPI">
+  </a>
+  <a href="https://github.com/im-shashanks/coacoa/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-Apache--2.0-green.svg" alt="License">
+  </a>
+  <img src="https://img.shields.io/badge/Python-3.9%20|%203.10-blue.svg" alt="Python">
+  <img src="https://img.shields.io/github/actions/workflow/status/your-org/coacoa/ci.yml?branch=main&label=CI%20build" alt="Build status">
+  <a href="https://codecov.io/gh/im-shashanks/coacoa">
+    <img src="https://codecov.io/gh/im-shashanks/coacoa/branch/main/graph/badge.svg" alt="Coverage">
+  </a>
+</p>
+
+# CoaCoA v0.1 — Context aware Coding Assitant
+**Context-Optimised Agentic Coding Assistant**  
+- *“Drop it in, branch out, ship confidently.”*
 
 ---
 
@@ -21,6 +42,31 @@
    ```
 5. Review staged branch feature/s_001_01, commit & push.
 6. Rinse, repeat → production-ready PRs with ≥ 90 % test coverage and zero broken builds.
+
+## 🏃‍♂️  CLI quick-start
+
+> **Virtual-env:** Create virtualenv `.venv` at the project root `python3 -m venv .venv`  
+> All build, test, and lint commands run inside that venv, keeping global Python untouched.
+
+```bash
+# run with explicit sub-command
+coacoa init --claude-code            # scaffold + create CLAUDE.md
+
+# or simply run without a sub-command (same as `init`)
+coacoa --claude-code
+```
+
+### Getting help
+| Command | Shows… |  
+| - | - |  
+| coacoa --help | Global options and the list of sub-commands (init, version, …) |  
+| coacoa init --help | The per-command flags:  --claude-code, --cline |  
+
+-Tip – Running coacoa with no arguments is equivalent to coacoa init, so you can type the shorter form once you’re familiar with the flags.
+
+### 🔧 Configuration  
+• Default settings live in **.coacoa/coacoa.yaml** (ignored by Git).  
+• Create **coacoa.yaml** at project root to override any key; values deep-merge on top of the defaults.
 
 ## ✨ Why CoaCoA?
 | Area | CoaCoA v0.1 |  
@@ -172,4 +218,3 @@ A: Yes—set quality.target_coverage in a future release, but 90 % is the sane d
 *Apache-2.0 (see LICENSE).*
 
 *Happy shipping! :-)*
->>>>>>> 38d1138 (INITIAL COMMIT: SHASHANK)

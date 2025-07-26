@@ -16,8 +16,8 @@ inputs:
   - "templates/ui_ux.md"
 outputs:
   - "{{cfg.prd.main}}"
-  - "{{cfg.prd.shard_dir}}/*.md"
-  - "{{cfg.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
+  - "{{cfg.docs.prd.shard_dir}}/*.md"
+  - "{{cfg.docs.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
 depends_on:
   tasks:
     - tasks/generate_prd.md

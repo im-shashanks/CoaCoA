@@ -78,7 +78,7 @@ Artifacts – intelligence JSONs
 
 2. **Run Task** – follow every step in `tasks/analyze_codebase.md`.  
 
-* You are allowed to call external tools (`radon`, `pytest --cov`), but only reference
+* You are allowed to call external tools (`pytest --cov`), but only reference
      them; do **not** embed terminal output verbatim.
 
 3. **Annotate** `analysis.md` front-matter:
@@ -109,3 +109,24 @@ Macro hints for other agents
 * To verify a symbol: {{verify_symbol:function_name}}
 * To embed a micro-snippet ≤ cfg.limits.max_snippet_loc LOC:
 {{embed_snippet:file_path:line_start:line_end}}
+
+## Write artefacts
+
+```python
+# analysis.md
+out_path = Path(cfg.paths.analysis)
+out_path.parent.mkdir(parents=True, exist_ok=True)
+out_path.write_text(markdown_report, encoding="utf-8")
+
+# module_map.json
+modmap_path = Path(cfg.paths.module_map)
+modmap_path.parent.mkdir(parents=True, exist_ok=True)
+modmap_path.write_text(json.dumps(module_map, indent=2))
+
+# complexity.json (repeat pattern)
+complexity_path = Path(cfg.paths.complexity)
+complexity_path.parent.mkdir(parents=True, exist_ok=True)
+complexity_path.write_text(json.dumps(complexity, indent=2))
+
+# …same for dep_graph.json, hotspots.json, cycles.json, coverage.json
+```

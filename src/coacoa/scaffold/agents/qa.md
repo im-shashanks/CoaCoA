@@ -41,6 +41,8 @@ of assessing quality standards.
 1. Fail fast on first blocker; list all remaining issues.
 2. Use coverage diff to demand extra tests if ↓.
 3. Ensure new logs aren’t verbose or leaking PII.
+4. Re-run build & tests inside .venv or `{virtual environment}` within the project.
+
 
 ### Core Responsibilities
 1. Re-run build/tests
