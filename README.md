@@ -13,8 +13,8 @@
   </a>
   <img src="https://img.shields.io/badge/Python-3.9%20|%203.10-blue.svg" alt="Python">
   <img src="https://img.shields.io/github/actions/workflow/status/your-org/coacoa/ci.yml?branch=main&label=CI%20build" alt="Build status">
-  <a href="https://codecov.io/gh/im-shashanks/coacoa">
-    <img src="https://codecov.io/gh/im-shashanks/coacoa/branch/main/graph/badge.svg" alt="Coverage">
+  <a href="https://codecov.io/gh/im-shashanks/CoaCoA">
+    <img src="https://codecov.io/gh/im-shashanks/CoaCoA/branch/main/graph/badge.svg?token=3Q35EEJ3HF" alt="Coverage">
   </a>
 </p>
 
