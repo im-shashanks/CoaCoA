@@ -23,7 +23,6 @@ jobs:
           python3 -m pip install --upgrade pip
           pip install -e ".[dev]"
           pytest --cov=coacoa --cov-report=xml
-          mkdir .github/assets
           coverage-badge -o .github/assets/coverage.svg -f       # ← creates/overwrites badge
       - name: Upload badge as artefact   # optional – lets you download it
         uses: actions/upload-artifact@v4
