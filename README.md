@@ -1,7 +1,7 @@
 <!-- README header: paste ABOVE the existing content -->
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/im-shashanks/coacoa/main/.github/banner.svg" alt="CoaCoA logo" width="550">
+  <img src=".github/banner/CoaCoALogo.png" alt="CoaCoA logo" width="150">
 </p>
 
 <p align="center">
@@ -11,14 +11,18 @@
   <a href="https://github.com/im-shashanks/coacoa/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-Apache--2.0-green.svg" alt="License">
   </a>
-  <img src="https://img.shields.io/badge/Python-3.9%20|%203.10-blue.svg" alt="Python">
-  <img src="https://img.shields.io/github/actions/workflow/status/your-org/coacoa/ci.yml?branch=main&label=CI%20build" alt="Build status">
+  <a href="https://github.com/im-shashanks/CoaCoA/actions/workflows/ci.yml">
+  <img
+    src="https://img.shields.io/github/actions/workflow/status/im-shashanks/CoaCoA/ci.yml?branch=main&label=CI%20build"
+    alt="CI build status"
+  >
+    </a>
   <a href="https://codecov.io/gh/im-shashanks/CoaCoA">
-    <img src="https://codecov.io/gh/im-shashanks/CoaCoA/branch/main/graph/badge.svg?token=3Q35EEJ3HF" alt="Coverage">
+    <img src=".github/assets/coverage.svg" alt="coverage">
   </a>
 </p>
 
-# CoaCoA v0.1 — Context aware Coding Assitant
+# CoaCoA (*v0.1*) — Context aware Coding Assitant
 **Context-Optimised Agentic Coding Assistant**  
 - *“Drop it in, branch out, ship confidently.”*
 
