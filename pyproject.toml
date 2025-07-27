@@ -5,17 +5,29 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "coacoa"
 
-version = "0.1.0-beta.1"
+version = "0.1.0b1"
 
 description = "Context-Optimised Agentic Coding Assistant"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.9"
 
 authors = [
-  { name = "YOUR NAME", email = "your@email.com" }
+  { name = "Shashank S", email = "procodere@gmail.com" }
 ]
 
-license = { text = "Apache-2.0" }
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Software Development :: Build Tools",
+  "Topic :: Software Development :: Code Generators",
+  "Environment :: Console"
+]
 
-requires-python = ">=3.9"
+keywords = ["cli", "developer-tools", "code-analysis", "software-quality"]
 
 dependencies = [
   "typer>=0.9.0",
@@ -46,6 +58,12 @@ test = [
 
 [project.scripts]
 coacoa = "coacoa.__main__:app"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.setuptools.package-data]
 "coacoa.scaffold" = [".coacoa/**/*"]
