@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.0b2.post2] – 2025-07-31
+### Fixed
+- Packaged `.clinerules/**` folder so that `coacoa init --cline` works when
+  the package is installed from PyPI.  
+  (Hidden directories were previously excluded by setuptools.)
+
+### Packaging
+- Updated `pyproject.toml` `package-data` glob to include
+  `ide_helpers/.clinerules/**`.
+
 ## [0.1.0b2] – 2025-07-31
 ### Fixed
 - `coacoa init --cline` now copies only the `.clinerules/` helper directory into the project root and no longer duplicates `ide_helpers/` inside `.coacoa/`.

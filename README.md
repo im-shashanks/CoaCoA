@@ -22,7 +22,7 @@
   </a>
 </p>
 
-# CoaCoA (*v0.1.0b2.post1*) — Context aware Coding Assitant
+# CoaCoA (*v0.1.0b2.post2*) — Context aware Coding Assitant
 **Context-Optimised Agentic Coding Assistant**  
 - *“Drop it in, branch out, ship confidently.”*
 
@@ -33,7 +33,7 @@
 1. `pip install --pre coacoa`              *(you can also directly copy the `coacoa/` folder, after git clone `<repo>` if you prefer.)*  
 *(--pre flag is required because this is a beta version)*  
 
-> ⚠️ **Note:** CoaCoA is currently in public beta (`0.1.0b2.post1`).  
+> ⚠️ **Note:** CoaCoA is currently in public beta (`0.1.0b2.post2`).  
 > To install, use the `--pre` flag with pip as shown above.  
 > The stable release (`0.1.0`) will follow soon.  
 
