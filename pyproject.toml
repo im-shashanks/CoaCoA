@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "coacoa"
 
-version = "0.1.0b2"
+version = "0.1.0b2.post1"
 
 description = "Context-Optimised Agentic Coding Assistant"
 readme = "README.md"
