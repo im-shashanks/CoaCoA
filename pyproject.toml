@@ -66,4 +66,7 @@ package-dir = { "" = "src" }
 where = ["src"]
 
 [tool.setuptools.package-data]
-"coacoa.scaffold" = [".coacoa/**/*"]
+"coacoa.scaffold" = [
+  ".coacoa/**",
+  "ide_helpers/**"       # ← this is the important one
+]

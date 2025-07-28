@@ -93,7 +93,8 @@ def init_cmd(
     scaffold_dir = Path(
         str(files("coacoa.scaffold"))
     )  # Traversable → concrete Path
-    copy_tree(scaffold_dir, root / ".coacoa", force=False)
+    # Copy **only** the .coacoa sub‑folder from the scaffold package
+    copy_tree(scaffold_dir / ".coacoa", root / ".coacoa", force=False)
 
     # optional user-level override
     override_yaml = root / "coacoa.yaml"
@@ -119,7 +120,7 @@ def init_cmd(
 
     # --- IDE helper files
     _maybe_write_helper(root, "CLAUDE.md", "claude.md", claude_code)
-    _maybe_write_helper(root, ".clinerules", "clinerules", cline)
+    _maybe_write_helper(root, ".clinerules", ".clinerules", cline)
 
     typer.secho("Init complete ✔", fg="green")
 
@@ -146,6 +147,18 @@ def _maybe_write_helper(
     src = Path(str(files("coacoa.scaffold") / "ide_helpers" / template_name))
     dst = root / filename
 
+    # If the template is a directory (e.g., ".clinerules"), merge-copy it
+    if src.is_dir():
+        if dst.exists():
+            # merge without nuking any user files; ask on collisions
+            copy_tree(src, dst, force=False)
+            typer.echo(f"✓ Updated {filename}/")
+        else:
+            copy_tree(src, dst, force=False)
+            typer.echo(f"✓ Created {filename}/")
+        return
+
+    # Otherwise, treat it as a single file template
     if dst.exists():
         if not confirm(f"{filename} exists. Append CoaCoA block?"):
             typer.echo(f"Skipped {filename}")
