@@ -90,11 +90,16 @@ def init_cmd(
     except ImportError:  # back-port for Py<3.11
         from importlib_resources import files
 
-    scaffold_dir = Path(
-        str(files("coacoa.scaffold"))
-    )  # Traversable → concrete Path
-    # Copy **only** the .coacoa sub‑folder from the scaffold package
-    copy_tree(scaffold_dir / ".coacoa", root / ".coacoa", force=False)
+    scaffold_dir = Path(str(files("coacoa.scaffold")))  # Traversable → concrete Path
+
+    # ------------------------------------------------------------------ copy toolbox
+    toolbox_dst = root / ".coacoa"
+    copy_tree(scaffold_dir, toolbox_dst, force=False)
+
+    # remove IDE helper templates from the copied toolbox – they belong at project root
+    ide_helpers_dst = toolbox_dst / "ide_helpers"
+    if ide_helpers_dst.exists():
+        shutil.rmtree(ide_helpers_dst)
 
     # optional user-level override
     override_yaml = root / "coacoa.yaml"
@@ -105,7 +110,7 @@ def init_cmd(
 
     # --- update .gitignore
     gi_path = root / ".gitignore"
-    gi_line = ".coacoa/\n"
+    gi_line = "\n.coacoa/\n"
     if gi_path.exists():
         with gi_path.open("r+", encoding="utf-8") as fp:
             lines = fp.readlines()

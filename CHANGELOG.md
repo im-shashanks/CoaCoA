@@ -1,6 +1,14 @@
 # Changelog
 
-## [0.1.0-beta] – 2025-07-30
+## [0.1.0b2] – 2025-07-31
+### Fixed
+- `coacoa init --cline` now copies only the `.clinerules/` helper directory into the project root and no longer duplicates `ide_helpers/` inside `.coacoa/`.
+
+### Internal
+- Added directory‑aware helper installation logic.
+- Updated package‐data glob and CI tests (coverage unchanged at 92 %).
+
+## [0.1.0b1] – 2025-07-30
 ### Added
 - First public beta of **CoaCoA**: scaffold CLI, 12 agents, quality gates, dependency-aware orchestrator.
 - Supports Claude-Code and Cline.
