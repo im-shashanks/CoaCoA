@@ -9,7 +9,7 @@ runner = CliRunner()
 
 def test_init_non_git_repo_creates_scaffold(monkeypatch):
     """
-    init should succeed outside a git repo and create .coacoa/ + helper files.
+    init should succeed outside a git repo and create coacoa/ + helper files.
     """
     # auto‑accept all confirmation prompts
     monkeypatch.setattr(cli, "confirm", lambda *_, **__: True)
@@ -29,7 +29,7 @@ def test_init_non_git_repo_creates_scaffold(monkeypatch):
         cwd = Path.cwd()
         result = runner.invoke(cli.app, ["init", "--cline"])
         assert result.exit_code == 0, result.output
-        assert (cwd / ".coacoa").exists()
+        assert (cwd / "coacoa").exists()
         assert (cwd / ".clinerules").exists()
 
 
@@ -189,7 +189,7 @@ def test_init_gitignore_handling(monkeypatch):
             return True
         elif "Create editable coacoa.yaml" in msg:
             return False
-        elif "Append .coacoa/ to .gitignore" in msg:
+        elif "Append coacoa/ to .gitignore" in msg:
             return True
         return True
     
@@ -216,7 +216,7 @@ def test_init_gitignore_handling(monkeypatch):
         assert result.exit_code == 0
         
         gitignore_content = (cwd / ".gitignore").read_text()
-        assert ".coacoa/" in gitignore_content
+        assert "coacoa/" in gitignore_content
         assert "existing_content" in gitignore_content
 
 

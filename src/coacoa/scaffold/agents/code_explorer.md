@@ -24,7 +24,8 @@ outputs:
 
 depends_on:
   tasks:
-  - tasks/analyze_codebase.md
+  - tasks/analyze_codebase_cline.md       # For Cline IDE
+  - tasks/analyze_codebase_parallel.md    # For Claude-code
 
   templates: []
 
@@ -76,7 +77,14 @@ Artifacts – intelligence JSONs
   > `CIS UP-TO-DATE`  
   and exit.
 
-2. **Run Task** – follow every step in `tasks/analyze_codebase.md`.  
+2. **Detect Environment & Run Appropriate Task**
+
+* **If running in Claude Code** (Task tool available for parallel processing):
+  - Execute `tasks/analyze_codebase_parallel.md` 
+* **If running in Cline** (sequential processing required):
+  - Execute `tasks/analyze_codebase_cline.md`
+* **If unsure or Task tool unavailable**:
+  - Default to `tasks/analyze_codebase.md` (original single-pass analysis)  
 
 * You are allowed to call external tools (`pytest --cov`), but only reference
      them; do **not** embed terminal output verbatim.

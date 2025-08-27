@@ -3,7 +3,7 @@ import yaml
 from typing import Any, Dict, Optional
 
 def load_config(project_root: Path) -> Dict[str, Any]:
-    base = project_root / ".coacoa" / "coacoa.yaml"
+    base = project_root / "coacoa" / "coacoa.yaml"
     cfg: Dict[str, Any] = yaml.safe_load(base.read_text())  # required
     override = project_root / "coacoa.yaml"
     if override.exists():

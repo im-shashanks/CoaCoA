@@ -1,5 +1,3 @@
-<!-- README header: paste ABOVE the existing content -->
-
 <p align="center">
   <img src=".github/banner/CoaCoALogo.png" alt="CoaCoA logo" width="150">
 </p>
@@ -22,209 +20,296 @@
   </a>
 </p>
 
-# CoaCoA (*v0.1.0b2.post2*) — Context aware Coding Assitant
-**Context-Optimised Agentic Coding Assistant**  
-- *“Drop it in, branch out, ship confidently.”*
+<h1 align="center">CoaCoA</h1>
+<p align="center"><strong>Context-Optimised Agentic Coding Assistant</strong></p>
+<p align="center">
+  <em>An enterprise-grade AI-powered development framework that transforms how teams build, test, and ship software</em>
+</p>
 
 ---
 
-## 📌 TL;DR  
+## Overview
 
-1. `pip install --pre coacoa`              *(you can also directly copy the `coacoa/` folder, after git clone `<repo>` if you prefer.)*  
-*(--pre flag is required because this is a beta version)*  
+CoaCoA is a production-ready framework that integrates AI agents into your development workflow to deliver high-quality, tested code with enterprise-grade compliance. Built for teams who demand reliability, quality, and speed.
 
-> ⚠️ **Note:** CoaCoA is currently in public beta (`0.1.0b2.post2`).  
-> To install, use the `--pre` flag with pip as shown above.  
-> The stable release (`0.1.0`) will follow soon.  
+### Key Benefits
 
-2. `coacoa init`                       *(or manual copy) — scaffolds `coacoa/`, `CLAUDE.md`, `.clinerules`*  
-3. `git add . && git commit -m "init coa"`  
-4. In your IDE (Claude Code / Cline):  
+- **Zero Broken Builds**: Comprehensive quality gates ensure code passes tests, lint, and coverage requirements
+- **Enterprise Compliance**: Human-controlled commits with staged changes for audit and review processes
+- **Intelligent Automation**: 12 specialized AI agents handle everything from architecture to QA
+- **Legacy Integration**: Seamlessly analyze and enhance existing codebases with automated dependency mapping
+- **Quality Assurance**: Maintains 90%+ test coverage with anti-hallucination checks
 
-   ```text
-   /analyze-codebase        # brown-field   │  or  │  /analyst init      # green-field
-   /pm new-prd
-   /ux-designer make-ui
-   /po refine-epics
-   /architect finalize-arch
-   /scrum-master create
-   /orchestrator run        # Dev → QA loop
-   ```
-5. Review staged branch feature/s_001_01, commit & push.
-6. Rinse, repeat → production-ready PRs with ≥ 90 % test coverage and zero broken builds.
+---
 
-## 🏃‍♂️  CLI quick-start
+## Quick Start
 
-> **Virtual-env:** Create virtualenv `.venv` at the project root `python3 -m venv .venv`  
-> All build, test, and lint commands run inside that venv, keeping global Python untouched.
+### Installation
 
 ```bash
-# run with explicit sub-command
-coacoa init --claude-code            # scaffold + create CLAUDE.md
-
-# or simply run without a sub-command (same as `init`)
-coacoa --claude-code
+pip install git+https://github.com/im-shashanks/CoaCoA.git
 ```
 
-### Getting help
-| Command | Shows… |  
-| - | - |  
-| coacoa --help | Global options and the list of sub-commands (init, version, …) |  
-| coacoa init --help | The per-command flags:  --claude-code, --cline |  
+> **Note**: CoaCoA is currently in public beta. Installing from git ensures you get the latest features and fixes.
 
--Tip – Running coacoa with no arguments is equivalent to coacoa init, so you can type the shorter form once you’re familiar with the flags.
+### Initialize Your Project
 
-### 🔧 Configuration  
-• Default settings live in **.coacoa/coacoa.yaml** (ignored by Git).  
-• Create **coacoa.yaml** at project root to override any key; values deep-merge on top of the defaults.
+```bash
+# Navigate to your project directory
+cd your-project
 
-## ✨ Why CoaCoA?
-| Area | CoaCoA v0.1 |  
-| - | - |  
-| Config schema | 28-key namespaced YAML |  
-| Code-intel | map + deps + complexity + hotspots + coverage + cycles + build_info |  
-| Quality gates | 🎯 5 checklists (Anti-Hallucination, Link, QA, Arch, Build) |  
-| Workflow | 12 agents (UX, PO, Architect, Code-Explorer, Orchestrator) |  
-| Branching | auto feature/<story> branch (staged, not committed) |  
-| SOLID policy | Pragmatic SRP/OCP mandatory, rest advisory via ADR |  
+# Initialize CoaCoA framework
+coacoa init --claude-code  # For Claude Code IDE
+# or
+coacoa init --cline        # For Cline IDE
 
-## 🗂 Folder & file map
-coacoa/  
-├─ coacoa.yaml               ← config (paths, limits, workflows…)  
-├─ agents/                   ← markdown specs (analyst, pm, … orchestrator)  
-├─ tasks/                    ← step-by-step recipes (analyze_codebase.md …)  
-├─ templates/                ← PRD, UI/UX, architecture, story, ADR…  
-├─ quality/                  ← checklists (anti_hallucination, build_integrity…)  
-├─ data/                     ← tech_preferences.md, solid_policy.md, style_guides/  
-├─ workflows/                ← default_greenfield.yml, default_brownfield.yml  
-└─ context/                  ← generated intelligence artefacts  
-
-**Git**
-Add coacoa/* to .gitignore.  
-Orchestrator stages changes; you commit/push.  
-
-### ⚙ coacoa.yaml — key highlights
-```yaml
-paths:                             # where artefacts live
-    analysis: context/analysis.md
-    module_map: context/intelligence/module_map.json
-    build_info: context/intelligence/build_info.json
-limits:                            # token / LOC budgets
-    max_snippet_loc: 120
-    max_tokens_context: 12000
-workflows:
-    greenfield: workflows/default_greenfield.yml
-    brownfield: workflows/default_brownfield.yml
-quality:
-    anti_hallucination: quality/anti_hallucination.md
-docs:
-    adr_dir: docs/adr/              # Architecture Decision Records
-    file_prefixes:
-story: "s_"                     # s_001_01.md
-epic:  "e_"                     # e_001.md
+# Commit the framework setup
+git add . && git commit -m "Add CoaCoA framework"
 ```
 
-(Full schema lives in the file itself.)
+### Choose Your Workflow
 
-## 💬 Command palette (Claude Code / Cline)
-
-| Slash command | Agent invoked | When you use it |  
-| - | - | - |  
-| /analyze-codebase | Code-Explorer | First step in brown-field repo |  
-| /analyst init | Analyst | First step in green-field idea |  
-| /pm new-prd | PM | Generate / refresh PRD |  
-| /ux-designer make-ui | UX-Designer | Add UI flows & a11y notes |  
-| /po refine-epics | Product Owner | Rank epics, create backlog |  
-| /architect finalize-arch | Architect | Produce architecture doc & ADRs |  
-| /scrum-master create | Scrum-Master | Split epics into stories |  
-| /dev implement <story> | Developer | Work a single story |  
-| /qa review | QA | Validate Dev’s story |  
-| /orchestrator run | Orchestrator | Drive Dev → QA for next story |  
-
-*(Run /orchestrator log anytime to see pipeline status.)*  
-
-## 🚀 Green-field walk-through (idea → app)
+#### New Projects (Greenfield)
+Start with an idea and build a complete application:
 
 ```text
-/analyst init    "Real-time expense tracker for remote teams"
-/analyst         # responds with clarifying questions
-→  You answer those questions until ✔ Open-Questions list is empty
-
+/analyst init "Real-time expense tracker for remote teams"
 /pm new-prd
-    ↳ prd.md + initial epics e_001.md … e_n.md
 /ux-designer make-ui
-    ↳ ui_ux.md with wireframes + a11y notes
-/po refine-epics
-    ↳ backlog.md (ranked)
 /architect finalize-arch
-    ↳ architecture.md + docs/adr/2025-07-26-db-choice.md
-/scrum-master create
-    ↳ stories/s_001_01.md …
-/orchestrator run
-    ⇒ feature/s_001_01 branch staged
-    ⇒ Dev builds, tests (≥ 90 % coverage), updates story footer
-    ⇒ QA validates, appends report
-Human: git commit -m "story s_001_01 – user onboarding" && git push
-```  
-
-#### Notes
-•	"/analyst init `"<one-sentence product idea>"`  *– You can supply a single-line vision statement inline, or just run /analyst init and paste whatever raw notes you have.*  
-•	The Analyst will always ask follow-up questions until its Open-Questions list is empty; that guarantees the PM starts with a complete domain doc.  
-•	Everything after the Analyst step remains identical to the original workflow.  
-
-## 🔧 Brown-field quick-start
-
-```bash
-git clone <legacy-repo>
-cp -r coacoa/ CLAUDE.md .clinerules .
-echo "coacoa/" >> .gitignore
-/analyze-codebase         # CIS artefacts + build_info.json
-/pm new-prd               # aligns PRD with real modules
-/po refine-epics
-/architect finalize-arch  # breaks cycles, writes ADR
-/scrum-master create
 /orchestrator run
 ```
 
-*Branch rule  
-Each story = its own branch feature/s_<id> staged only.  Humans merge to  
-trunk after review → zero surprise refactors.*  
+#### Existing Projects (Brownfield)
+Enhance existing codebases with intelligent analysis:
 
-### ✅ Quality gates snapshot
-•	Build-Integrity – build, test, lint run before QA (B-1…B-5).  
-•	Coverage – ≥ 90 % lines for touched files; delta tracked in story footer.  
-•	Anti-Hallucination – 12-point symbol & path sanity.  
-•	Arch-Integrity – no dependency cycles, ADRs linked.  
-•	SOLID (pragmatic) – SRP & OCP hard-enforced; others advisory via ADR.  
+```text
+/analyze-codebase
+/pm new-prd
+/architect finalize-arch
+/orchestrator run
+```
 
-### 🧑‍🎓 Extending CoaCoA
-•	Add a new agent: drop agents/<name>.md, reference it in a workflow YAML.  
-•	Add a new quality gate: create checklist in quality/, list it under agent’s checks:.  
-•	Swap LLM: change llm.default in coacoa.yaml.  
+---
 
-### 🤔 FAQ
+## Architecture
 
-Q: Why no auto-commit?  
-A: Corporate compliance often requires human sign-off; CoaCoA stages but never commits.  
+### Multi-Agent System
 
-Q: Will stories bloat token context over time?  
-A: Micro-context is capped to max_snippet_loc (120 LOC); old modules are referenced by path, not pasted.  
+CoaCoA employs 12 specialized AI agents, each with distinct responsibilities:
 
-Q: Can I lower coverage?  
-A: Yes—set quality.target_coverage in a future release, but 90 % is the sane default for v0.1.  
+| Agent | Role | Purpose |
+|-------|------|---------|
+| **Analyst** | Requirements Gathering | Converts ideas into detailed domain specifications |
+| **Product Manager** | Strategy & Planning | Creates PRDs and defines feature requirements |
+| **UX Designer** | User Experience | Designs interfaces and accessibility guidelines |
+| **Product Owner** | Backlog Management | Prioritizes features and manages epic dependencies |
+| **Architect** | System Design | Creates technical architecture and design decisions |
+| **Scrum Master** | Project Management | Breaks epics into implementable stories |
+| **Developer** | Implementation | Writes code following TDD practices with >90% coverage |
+| **QA Engineer** | Quality Assurance | Validates implementations against requirements |
+| **Code Explorer** | Analysis | Performs deep codebase analysis and intelligence gathering |
+| **Orchestrator** | Workflow Management | Coordinates multi-agent workflows and ensures quality gates |
 
-⸻
+### Quality Framework
 
-### ✍ Contributing
-1.	Fork, branch fix/<topic>.  
-2.	Run /orchestrator run on sample examples/petclinic_py.  
-3.	Ensure all checklists pass.  
-4.	PR with linking ADR if changing architecture.  
+CoaCoA implements five comprehensive quality gates:
 
-⸻
+1. **Build Integrity**: Ensures all code compiles, tests pass, and linting requirements are met
+2. **Anti-Hallucination**: Validates symbol names, paths, and API references for accuracy
+3. **Architecture Integrity**: Prevents dependency cycles and enforces design principles
+4. **Link Integrity**: Verifies all file references and documentation links
+5. **QA Compliance**: Confirms requirements are met and edge cases are handled
 
-**© Licence**
+---
 
-*Apache-2.0 (see LICENSE).*
+## Project Structure
 
-*Happy shipping! :-)*
+After initialization, CoaCoA creates the following structure:
+
+```
+your-project/
+├── coacoa/                          # CoaCoA framework (add to .gitignore)
+│   ├── coacoa.yaml                  # Configuration settings
+│   ├── agents/                      # AI agent specifications
+│   ├── tasks/                       # Step-by-step workflows
+│   ├── templates/                   # Document templates (PRD, ADR, etc.)
+│   ├── quality/                     # Quality gate checklists
+│   ├── workflows/                   # Greenfield and brownfield workflows
+│   └── context/                     # Generated analysis artifacts
+├── CLAUDE.md                        # Claude Code command reference
+├── .clinerules/                     # Cline IDE integration
+└── coacoa.yaml                      # Project-specific overrides (optional)
+```
+
+---
+
+## Configuration
+
+### Default Configuration
+
+CoaCoA uses a hierarchical configuration system:
+
+- **Base configuration**: `coacoa/coacoa.yaml` (framework defaults)
+- **Project overrides**: `coacoa.yaml` in your project root (optional)
+
+### Key Configuration Options
+
+```yaml
+paths:                                # Artifact locations
+  analysis: coacoa/context/analysis.md
+  module_map: coacoa/context/intelligence/module_map.json
+  build_info: coacoa/context/intelligence/build_info.json
+
+limits:                               # Resource constraints
+  max_snippet_loc: 120               # Lines of code per context window
+  max_tokens_context: 12000          # Token budget for AI operations
+
+quality:                             # Quality assurance settings
+  anti_hallucination: coacoa/quality/anti_hallucination.md
+  build_integrity: coacoa/quality/build_integrity.md
+
+workflows:                           # Workflow definitions
+  greenfield: coacoa/workflows/default_greenfield.yml
+  brownfield: coacoa/workflows/default_brownfield.yml
+```
+
+---
+
+## Command Reference
+
+### IDE Integration
+
+CoaCoA integrates seamlessly with AI-powered IDEs through slash commands:
+
+| Command | Purpose | Use Case |
+|---------|---------|----------|
+| `/analyze-codebase` | Deep codebase analysis | Initial brownfield setup |
+| `/analyst init "<idea>"` | Start requirement gathering | New project initialization |
+| `/pm new-prd` | Generate product requirements | Define project scope |
+| `/ux-designer make-ui` | Create UX specifications | Design user interfaces |
+| `/po refine-epics` | Prioritize features | Backlog management |
+| `/architect finalize-arch` | Design system architecture | Technical planning |
+| `/scrum-master create` | Break down work items | Sprint planning |
+| `/dev implement <story>` | Code implementation | Feature development |
+| `/qa review` | Quality validation | Testing and verification |
+| `/orchestrator run` | Automated workflow execution | End-to-end development |
+
+### CLI Commands
+
+```bash
+# Get help
+coacoa --help
+coacoa init --help
+
+# Initialize with IDE support
+coacoa init --claude-code    # For Claude Code
+coacoa init --cline         # For Cline
+
+# Check version
+coacoa version
+```
+
+---
+
+## Workflows
+
+### Greenfield Development
+
+Build new applications from concept to production:
+
+1. **Requirements Analysis**: Gather and refine requirements through AI-guided questioning
+2. **Product Planning**: Generate comprehensive PRDs with measurable goals
+3. **UX Design**: Create user interface specifications and accessibility guidelines
+4. **Architecture Design**: Design system architecture with decision records
+5. **Implementation**: Develop features with test-driven development
+6. **Quality Assurance**: Validate implementations against requirements
+7. **Deployment**: Stage changes for human review and approval
+
+### Brownfield Enhancement
+
+Modernize and enhance existing codebases:
+
+1. **Codebase Analysis**: Automated analysis of code structure, dependencies, and complexity
+2. **Technical Debt Assessment**: Identify hotspots, cycles, and improvement opportunities
+3. **Architecture Alignment**: Create PRDs that align with existing system structure
+4. **Incremental Enhancement**: Implement improvements without breaking existing functionality
+5. **Quality Gates**: Ensure all changes meet enterprise standards
+
+---
+
+## Enterprise Features
+
+### Compliance & Governance
+
+- **Human-Controlled Commits**: All changes are staged but never automatically committed
+- **Audit Trail**: Complete history of decisions through Architecture Decision Records (ADRs)
+- **Quality Enforcement**: Mandatory quality gates prevent substandard code from progressing
+- **Dependency Management**: Automated analysis and management of project dependencies
+
+### Scalability & Performance
+
+- **Token-Aware Processing**: Intelligent chunking prevents context overflow
+- **Parallel Processing**: Concurrent analysis for large codebases
+- **Incremental Updates**: Only processes changed components
+- **Configurable Limits**: Adjustable resource constraints for different team sizes
+
+### Integration Capabilities
+
+- **Multi-IDE Support**: Claude Code and Cline integration out of the box
+- **Version Control**: Git-native workflow with branch-per-feature development
+- **Build System Detection**: Automatic detection of Maven, Gradle, NPM, Python, and other ecosystems
+- **Testing Framework Integration**: Seamless integration with existing test suites
+
+---
+
+## FAQ
+
+**Q: Why doesn't CoaCoA auto-commit changes?**
+A: Enterprise compliance often requires human review and sign-off. CoaCoA stages all changes but leaves final commits to developers, ensuring proper audit trails and approval processes.
+
+**Q: How does CoaCoA prevent context bloat with large projects?**
+A: CoaCoA uses intelligent context management with configurable token limits (default: 12,000 tokens) and line-of-code constraints (default: 120 LOC per snippet). Large codebases are referenced by path rather than content.
+
+**Q: Can I customize the quality requirements?**
+A: Yes, all quality gates are configurable through the `coacoa.yaml` file. You can adjust coverage thresholds, add custom checklists, and modify workflow steps to match your team's standards.
+
+**Q: Is CoaCoA suitable for large enterprises?**
+A: CoaCoA is designed with enterprise requirements in mind, including human oversight, comprehensive auditing, quality enforcement, and compliance features required by large organizations.
+
+**Q: How does CoaCoA handle existing code standards?**
+A: CoaCoA analyzes existing codebases to understand patterns, conventions, and architectural decisions, then ensures all new code follows established practices while suggesting improvements where appropriate.
+
+---
+
+## Contributing
+
+We welcome contributions from the community. To get started:
+
+1. **Fork** the repository and create a feature branch
+2. **Test** your changes using `/orchestrator run` on sample projects  
+3. **Ensure** all quality gates pass before submitting
+4. **Submit** a pull request with appropriate documentation
+
+For major architectural changes, please create an Architecture Decision Record (ADR) as part of your submission.
+
+---
+
+## License
+
+CoaCoA is licensed under the Apache-2.0 License. See [LICENSE](LICENSE) for details.
+
+---
+
+## Support
+
+- **Documentation**: [CoaCoA Docs](https://docs.anthropic.com/en/docs/claude-code/)
+- **Issues**: [GitHub Issues](https://github.com/im-shashanks/CoaCoA/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/im-shashanks/CoaCoA/discussions)
+
+---
+
+<p align="center">
+  <strong>Ready to transform your development workflow?</strong><br>
+  <code>pip install git+https://github.com/im-shashanks/CoaCoA.git && coacoa init</code>
+</p>

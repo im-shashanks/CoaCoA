@@ -13,14 +13,14 @@
 
 | Config key                                  | Expected value / example                    |
 |---------------------------------------------|---------------------------------------------|
-| `coa.paths.analysis`                        | `.coacoa/context/analysis.md`                       |
-| `coa.paths.module_map`                      | `.coacoa/context/intelligence/module_map.json`      |
-| `coa.paths.dep_graph`                       | `.coacoa/context/intelligence/dep_graph.json`       |
-| `coa.paths.complexity`                      | `.coacoa/context/intelligence/complexity.json`      |
-| `coa.paths.hotspots`                        | `.coacoa/context/intelligence/hotspots.json`        |
-| `coa.paths.coverage`                        | `.coacoa/context/intelligence/coverage.json`        |
+| `coa.paths.analysis`                        | `coacoa/context/analysis.md`                       |
+| `coa.paths.module_map`                      | `coacoa/context/intelligence/module_map.json`      |
+| `coa.paths.dep_graph`                       | `coacoa/context/intelligence/dep_graph.json`       |
+| `coa.paths.complexity`                      | `coacoa/context/intelligence/complexity.json`      |
+| `coa.paths.hotspots`                        | `coacoa/context/intelligence/hotspots.json`        |
+| `coa.paths.coverage`                        | `coacoa/context/intelligence/coverage.json`        |
 | `coa.limits.max_tokens_context`             | Prompt budget for any summarisation step    |
-| Exclude globs                               | `.git/ , coacoa/ , **/dist , **/node_modules` (hard-coded) |
+| Exclude globs                               | `.git/ , coacoa/ , .venv, .env, , **/dist , **/node_modules , .egg , .pyc , other files that are not important for codebase analysis` |
 
 ---
 

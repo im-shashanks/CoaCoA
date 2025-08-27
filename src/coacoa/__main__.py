@@ -93,7 +93,7 @@ def init_cmd(
     scaffold_dir = Path(str(files("coacoa.scaffold")))  # Traversable → concrete Path
 
     # ------------------------------------------------------------------ copy toolbox
-    toolbox_dst = root / ".coacoa"
+    toolbox_dst = root / "coacoa"
     copy_tree(scaffold_dir, toolbox_dst, force=False)
 
     # remove IDE helper templates from the copied toolbox – they belong at project root
@@ -106,16 +106,16 @@ def init_cmd(
     if not override_yaml.exists() and confirm("Create editable coacoa.yaml override at project root?"):
         override_yaml.write_text("# Override CoaCoA settings here\n", encoding="utf-8")
         typer.echo("✓ Created empty override coacoa.yaml (you can git-track this)")
-    typer.secho("✓ Copied .coacoa scaffold", fg="green")
+    typer.secho("✓ Copied coacoa scaffold", fg="green")
 
     # --- update .gitignore
     gi_path = root / ".gitignore"
-    gi_line = "\n.coacoa/\n"
+    gi_line = "\ncoacoa/\n"
     if gi_path.exists():
         with gi_path.open("r+", encoding="utf-8") as fp:
             lines = fp.readlines()
             if gi_line not in lines:
-                if confirm("Append .coacoa/ to .gitignore?"):
+                if confirm("Append coacoa/ to .gitignore?"):
                     fp.write(gi_line)
                     typer.echo("✓ Updated .gitignore")
     else:

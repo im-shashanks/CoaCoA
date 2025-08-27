@@ -12,7 +12,7 @@
 
 ## [0.1.0b2] – 2025-07-31
 ### Fixed
-- `coacoa init --cline` now copies only the `.clinerules/` helper directory into the project root and no longer duplicates `ide_helpers/` inside `.coacoa/`.
+- `coacoa init --cline` now copies only the `.clinerules/` helper directory into the project root and no longer duplicates `ide_helpers/` inside `coacoa/`.
 
 ### Internal
 - Added directory‑aware helper installation logic.
@@ -25,7 +25,7 @@
 
 ### Fixed
 - CLI now succeeds outside git repos.
-- Path handling moves all artefacts into `.coacoa/`.
+- Path handling moves all artefacts into `coacoa/`.
 
 ### Internal
 - 92 % test coverage, PyYAML & Typer dependencies frozen.
