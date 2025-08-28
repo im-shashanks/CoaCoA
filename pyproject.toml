@@ -67,7 +67,7 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "coacoa.scaffold" = [
-  ".coacoa/**",
+  "coacoa/**",
   "ide_helpers/**",       # ← this is the important one
   "ide_helpers/.clinerules/**"
 ]

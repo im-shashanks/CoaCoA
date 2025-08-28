@@ -3,7 +3,7 @@ import shutil, yaml
 from coacoa.config import load_config, detect_venv
 
 def test_deep_merge(tmp_path: Path):
-    base = tmp_path / ".coacoa"
+    base = tmp_path / "coacoa"
     base.mkdir()
     (base / "coacoa.yaml").write_text("a:\n  b: 1\n")
     override = tmp_path / "coacoa.yaml"

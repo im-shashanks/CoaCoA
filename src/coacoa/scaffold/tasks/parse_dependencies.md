@@ -7,8 +7,8 @@ purpose: >
   • story_map     → every story’s status + depends_on list
 inputs:
   - backlog.md
-  - ".coacoa/docs/prd/e_*.md"
-  - ".coacoa/docs/prd/stories/s_*.md"
+  - "coacoa/docs/prd/e_*.md"
+  - "coacoa/docs/prd/stories/s_*.md"
 outputs:
   - (returns python dicts to caller; writes nothing to disk)
 ---
@@ -30,7 +30,7 @@ for a, b in re.findall(pattern, dep_section, flags=re.I):
 
 # ---------------- story files → story_map
 story_map = {}
-for p in glob.glob(".coacoa/docs/prd/stories/s_*.md"):
+for p in glob.glob("coacoa/docs/prd/stories/s_*.md"):
     front = Path(p).read_text().split("---", 2)[1]
     meta = yaml.safe_load(front)
     story_map[meta["story_id"]] = {
@@ -41,7 +41,7 @@ for p in glob.glob(".coacoa/docs/prd/stories/s_*.md"):
 
 # ---------------- epic status
 epic_status = {}
-for p in glob.glob(".coacoa/docs/prd/e_*.md"):
+for p in glob.glob("coacoa/docs/prd/e_*.md"):
     front = Path(p).read_text().split("---", 2)[1]
     meta = yaml.safe_load(front)
     epic_status[meta["epic_id"]] = meta.get("status", "TODO")

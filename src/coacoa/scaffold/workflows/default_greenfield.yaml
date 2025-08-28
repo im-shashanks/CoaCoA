@@ -1,4 +1,5 @@
 stages:
+  - prep-codebase-analysis
   - code-explorer          # produce CIS
   - pm                     # PRD refresh
   - ux_designer            # UX design
