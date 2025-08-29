@@ -1,5 +1,6 @@
 # CoaCoA – Command Palette for Claude Code
 ---
+**YOU MUST FOLLOW ALL COMMANDS EXACTLY AS INSTRUCTED IN AGENT FILES DO NOT DEVIATE**
 
 **How to use**
 
