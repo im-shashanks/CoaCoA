@@ -69,5 +69,6 @@ where = ["src"]
 "coacoa.scaffold" = [
   "coacoa/**",
   "ide_helpers/**",       # ← this is the important one
-  "ide_helpers/.clinerules/**"
+  "ide_helpers/.clinerules/**",
+  "ide_helpers/.claude/**"
 ]
