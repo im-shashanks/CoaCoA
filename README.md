@@ -81,14 +81,36 @@ Start with an idea and build a complete application:
 ```
 
 #### Existing Projects (Brownfield)
-Enhance existing codebases with intelligent analysis:
+Enhance existing codebases with unified intelligent analysis:
 
 ```text
-/analyze-codebase
-/pm new-prd
-/architect finalize-arch
-/orchestrator run
+/codebase-detection        # Single command for comprehensive analysis
+/pm new-prd             # Generate PRD based on analysis findings
+/architect finalize-arch # Create architecture aligned with existing codebase
+/orchestrator run       # Execute implementation workflow
 ```
+
+---
+
+## 🚀 What's New in v2.0
+
+### **Unified Codebase Analysis** 
+- **Single Command**: `/codebase-detection` works seamlessly with both Claude Code and Cline
+- **Automatic Mode Detection**: Intelligently detects your IDE and optimizes execution
+- **Enterprise-Grade Analysis**: 8-phase comprehensive analysis including security, compliance, and architecture
+- **Executive Reporting**: Risk-prioritized findings with actionable recommendations for technical leadership
+
+### **Enhanced Enterprise Support**
+- **Massive Codebase Handling**: Supports 100K+ file repositories with intelligent token management
+- **Security & Compliance**: Built-in CVE scanning, license validation, and enterprise security patterns
+- **Advanced Build Systems**: Support for Bazel, Buck, Rush, Nx, and other enterprise build tools
+- **Evidence-Based Analysis**: No hallucinated findings - all claims supported by actual code analysis
+
+### **Improved Workflow Management**
+- **Planning-First Approach**: Front-loads all intelligence into comprehensive, self-contained plans
+- **Tool-Optimized Execution**: Parallel processing (Claude Code) vs sequential user-controlled (Cline)
+- **Progress Tracking**: Real-time visibility into analysis progress with standardized status updates
+- **Quality Assurance**: Enhanced validation with JSON schema checking and cross-phase validation
 
 ---
 
@@ -108,7 +130,7 @@ CoaCoA employs 12 specialized AI agents, each with distinct responsibilities:
 | **Scrum Master** | Project Management | Breaks epics into implementable stories |
 | **Developer** | Implementation | Writes code following TDD practices with >90% coverage |
 | **QA Engineer** | Quality Assurance | Validates implementations against requirements |
-| **Code Explorer** | Analysis | Performs deep codebase analysis and intelligence gathering |
+| **Code Explorer** | Codebase Analysis | Unified enterprise-grade codebase analysis with security, architecture, and quality assessment |
 | **Orchestrator** | Workflow Management | Coordinates multi-agent workflows and ensures quality gates |
 
 ### Quality Framework
@@ -132,11 +154,17 @@ your-project/
 ├── coacoa/                          # CoaCoA framework (add to .gitignore)
 │   ├── coacoa.yaml                  # Configuration settings
 │   ├── agents/                      # AI agent specifications
-│   ├── tasks/                       # Step-by-step workflows
-│   ├── templates/                   # Document templates (PRD, ADR, etc.)
+│   ├── tasks/                       # Unified workflow tasks
+│   ├── templates/                   # Document and analysis templates
+│   ├── schemas/                     # JSON validation schemas
 │   ├── quality/                     # Quality gate checklists
 │   ├── workflows/                   # Greenfield and brownfield workflows
-│   └── context/                     # Generated analysis artifacts
+│   └── context/                     # Generated analysis and intelligence
+│       └── analysis/                # Unified analysis structure
+│           ├── plan.md              # Master analysis plan with progress
+│           ├── artifacts/           # JSON intelligence files
+│           ├── reports/             # Detailed phase reports
+│           └── consolidated/        # Executive summary & recommendations
 ├── CLAUDE.md                        # Claude Code command reference
 ├── .clinerules/                     # Cline IDE integration
 └── coacoa.yaml                      # Project-specific overrides (optional)
@@ -156,22 +184,33 @@ CoaCoA uses a hierarchical configuration system:
 ### Key Configuration Options
 
 ```yaml
-paths:                                # Artifact locations
-  analysis: coacoa/context/analysis.md
-  module_map: coacoa/context/intelligence/module_map.json
-  build_info: coacoa/context/intelligence/build_info.json
+# Unified Analysis Structure
+paths:
+  analysis_dir: coacoa/context/analysis/               # Main analysis directory
+  analysis_plan: coacoa/context/analysis/plan.md      # Master analysis plan
+  analysis_artifacts: coacoa/context/analysis/artifacts/ # JSON intelligence files
+  analysis_consolidated: coacoa/context/analysis/consolidated/ # Final outputs
 
-limits:                               # Resource constraints
+# Resource Management
+limits:
   max_snippet_loc: 120               # Lines of code per context window
   max_tokens_context: 12000          # Token budget for AI operations
 
-quality:                             # Quality assurance settings
+# Unified Analysis Configuration
+analysis:
+  enterprise_mode: true              # Enable enterprise-specific features
+  unified_workflow: true             # Use new unified analysis workflow
+  auto_mode_detection: true          # Automatically detect Claude Code vs Cline
+  schema_validation: true            # Validate all artifacts against schemas
+  evidence_requirement: true         # Require evidence-based findings only
+  parallel_task_limit: 8             # Max parallel tasks for Claude Code mode
+
+# Quality Assurance
+quality:
   anti_hallucination: coacoa/quality/anti_hallucination.md
   build_integrity: coacoa/quality/build_integrity.md
-
-workflows:                           # Workflow definitions
-  greenfield: coacoa/workflows/default_greenfield.yml
-  brownfield: coacoa/workflows/default_brownfield.yml
+  security_gate: coacoa/quality/security_gate.md
+  performance_gate: coacoa/quality/performance_gate.md
 ```
 
 ---
@@ -184,7 +223,7 @@ CoaCoA integrates seamlessly with AI-powered IDEs through slash commands:
 
 | Command | Purpose | Use Case |
 |---------|---------|----------|
-| `/analyze-codebase` | Deep codebase analysis | Initial brownfield setup |
+| `/codebase-detection` | **Unified enterprise codebase analysis** | **Single command for comprehensive analysis (works with both Claude Code & Cline)** |
 | `/analyst init "<idea>"` | Start requirement gathering | New project initialization |
 | `/pm new-prd` | Generate product requirements | Define project scope |
 | `/ux-designer make-ui` | Create UX specifications | Design user interfaces |
@@ -226,15 +265,31 @@ Build new applications from concept to production:
 6. **Quality Assurance**: Validate implementations against requirements
 7. **Deployment**: Stage changes for human review and approval
 
-### Brownfield Enhancement
+### Unified Codebase Analysis
 
-Modernize and enhance existing codebases:
+**NEW**: Single-command enterprise-grade codebase analysis for both Claude Code and Cline:
 
-1. **Codebase Analysis**: Automated analysis of code structure, dependencies, and complexity
-2. **Technical Debt Assessment**: Identify hotspots, cycles, and improvement opportunities
-3. **Architecture Alignment**: Create PRDs that align with existing system structure
-4. **Incremental Enhancement**: Implement improvements without breaking existing functionality
-5. **Quality Gates**: Ensure all changes meet enterprise standards
+#### **Analysis Phases** (Automatic execution mode detection):
+
+1. **Repository Intelligence**: File discovery, language detection, architecture pattern recognition
+2. **Build System Analysis**: Enterprise build system detection (Bazel, Rush, Nx, standard tools)
+3. **Architecture Assessment**: Dependency mapping, circular dependency detection, layer violations
+4. **Quality & Complexity**: Code complexity metrics, technical debt assessment, maintainability analysis
+5. **Security & Compliance**: Vulnerability scanning, license compliance, enterprise security patterns
+6. **Git History Analysis**: Team collaboration patterns, knowledge risks, code hotspot identification
+7. **Performance Assessment**: Algorithmic complexity analysis, scalability bottlenecks
+8. **Executive Summary**: Risk-prioritized findings with actionable recommendations
+
+#### **Execution Modes**:
+- **Claude Code**: Parallel execution with automatic orchestration
+- **Cline**: Sequential execution with user-controlled progression
+
+#### **Enterprise Features**:
+- **Evidence-Based Analysis**: No hallucinated findings, all claims supported by code analysis
+- **Schema Validation**: All artifacts validated against defined schemas  
+- **Progress Tracking**: Real-time visibility into analysis progress
+- **Partial Results**: Graceful degradation if analysis cannot complete fully
+- **Quality Gates**: Built-in anti-hallucination and validation checks
 
 ---
 
@@ -249,16 +304,18 @@ Modernize and enhance existing codebases:
 
 ### Scalability & Performance
 
-- **Token-Aware Processing**: Intelligent chunking prevents context overflow
-- **Parallel Processing**: Concurrent analysis for large codebases
-- **Incremental Updates**: Only processes changed components
-- **Configurable Limits**: Adjustable resource constraints for different team sizes
+- **Token-Aware Processing**: Language-specific token estimation with intelligent chunking
+- **Dual Execution Modes**: Parallel processing (Claude Code) or sequential with resume capability (Cline)
+- **Enterprise-Scale Ready**: Handles 100K+ file codebases with progressive summarization
+- **Smart Batch Sizing**: Directory affinity and complexity-based file grouping
+- **Fingerprint-Based Caching**: Only reanalyzes changed components
 
 ### Integration Capabilities
 
 - **Multi-IDE Support**: Claude Code and Cline integration out of the box
 - **Version Control**: Git-native workflow with branch-per-feature development
-- **Build System Detection**: Automatic detection of Maven, Gradle, NPM, Python, and other ecosystems
+- **Advanced Build System Detection**: Enterprise systems (Bazel, Buck, Rush, Nx) + standard tools (Maven, Gradle, NPM, Python)
+- **Security & Compliance Integration**: CVE scanning, license validation, enterprise security patterns
 - **Testing Framework Integration**: Seamless integration with existing test suites
 
 ---
@@ -268,8 +325,8 @@ Modernize and enhance existing codebases:
 **Q: Why doesn't CoaCoA auto-commit changes?**
 A: Enterprise compliance often requires human review and sign-off. CoaCoA stages all changes but leaves final commits to developers, ensuring proper audit trails and approval processes.
 
-**Q: How does CoaCoA prevent context bloat with large projects?**
-A: CoaCoA uses intelligent context management with configurable token limits (default: 12,000 tokens) and line-of-code constraints (default: 120 LOC per snippet). Large codebases are referenced by path rather than content.
+**Q: How does CoaCoA handle massive enterprise codebases?**
+A: The new unified analysis workflow uses language-specific token estimation, intelligent batch sizing, and progressive summarization. It can handle 100K+ file codebases by focusing on highest-impact insights within configurable token limits.
 
 **Q: Can I customize the quality requirements?**
 A: Yes, all quality gates are configurable through the `coacoa.yaml` file. You can adjust coverage thresholds, add custom checklists, and modify workflow steps to match your team's standards.
@@ -277,8 +334,11 @@ A: Yes, all quality gates are configurable through the `coacoa.yaml` file. You c
 **Q: Is CoaCoA suitable for large enterprises?**
 A: CoaCoA is designed with enterprise requirements in mind, including human oversight, comprehensive auditing, quality enforcement, and compliance features required by large organizations.
 
+**Q: What's new in the unified codebase analysis?**
+A: The new `/codebase-detection` command provides enterprise-grade analysis through a single interface that automatically detects your IDE (Claude Code vs Cline) and optimizes execution accordingly. It includes security scanning, compliance checks, and generates executive-ready reports with actionable recommendations.
+
 **Q: How does CoaCoA handle existing code standards?**
-A: CoaCoA analyzes existing codebases to understand patterns, conventions, and architectural decisions, then ensures all new code follows established practices while suggesting improvements where appropriate.
+A: The unified analysis automatically detects existing patterns, conventions, and architectural decisions, then ensures all new code follows established practices while providing specific improvement recommendations prioritized by risk level.
 
 ---
 

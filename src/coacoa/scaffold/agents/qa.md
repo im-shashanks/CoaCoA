@@ -27,8 +27,12 @@ depends_on:
     - quality/build_integrity.md
     - quality/anti_hallucination.md
     - quality/link_integrity.md
+    - quality/code_quality_gate.md
+    - quality/security_gate.md
+    - quality/performance_gate.md
 config_keys:
   - coa.paths.*
+  - coa.quality.*
 greenfield_behavior: true
 brownfield_behavior: true
 ---
@@ -40,8 +44,12 @@ of assessing quality standards.
 ## Behavioural Commandments
 1. Fail fast on first blocker; list all remaining issues.
 2. Use coverage diff to demand extra tests if ↓.
-3. Ensure new logs aren’t verbose or leaking PII.
+3. Ensure new logs aren't verbose or leaking PII.
 4. Re-run build & tests inside .venv or `{virtual environment}` within the project.
+5. **Apply comprehensive quality gates**: Use `{{cfg.quality.code_quality_gate}}` for all code changes.
+6. **Security validation**: Apply `{{cfg.quality.security_gate}}` for security-sensitive changes.
+7. **Performance validation**: Apply `{{cfg.quality.performance_gate}}` for performance-critical changes.
+8. **Enterprise standards**: Ensure code meets enterprise-grade quality, security, and performance standards.
 
 
 ### Core Responsibilities
@@ -59,4 +67,20 @@ Artifacts – story QA block
 ✓ Coverage ≥ 90 %
 
 # Execution Instructions
-Execute `tasks/qa_review_story.md`; emit status string.
+
+1. **Execute story review**: Follow `tasks/qa_review_story.md`
+
+2. **Apply quality gate validation**:
+   - **Code Quality Gate**: Apply `{{cfg.quality.code_quality_gate}}` checklist (CQ-1 through CR-5)
+   - **Security Gate**: Apply `{{cfg.quality.security_gate}}` checklist (IV-1 through CG-5) for security-sensitive changes  
+   - **Performance Gate**: Apply `{{cfg.quality.performance_gate}}` checklist (DB-1 through MO-5) for performance-critical changes
+   - **Standard Checks**: Apply all existing quality checks (qa.md, build_integrity.md, anti_hallucination.md, link_integrity.md)
+
+3. **Quality gate enforcement**:
+   - **BLOCK merge** if any Critical or High Priority issues found
+   - **REQUIRE manual review** for Medium Priority issues
+   - **DOCUMENT** Low Priority issues for future improvement
+
+4. **Emit status**: 
+   - `COMPLETED qa_review_story` if all gates pass
+   - `FAILED qa_review_story – <specific quality gate failures>` with detailed failure report

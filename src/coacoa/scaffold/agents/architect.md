@@ -19,6 +19,10 @@ inputs:
   - "{{cfg.paths.module_map}} (brownfield)"
   - "{{cfg.paths.cycles}}"
   - "{{cfg.paths.dep_graph}}"
+  - "{{cfg.data.tech_preferences}}"
+  - "{{cfg.data.pattern_library}}"
+  - "{{cfg.data.solid_policy}}"
+  - "{{cfg.data.language_rules}}"
 outputs:
   - "{{cfg.arch.main}}"
   - "{{cfg.arch.shard_dir}}/*.md"
@@ -34,12 +38,16 @@ depends_on:
     - quality/anti_hallucination.md
     - quality/link_integrity.md
     - quality/architecture_integrity.md
+    - quality/security_gate.md
+    - quality/performance_gate.md
 config_keys:
   - coa.arch.*
   - coa.paths.*
   - coa.docs.adr_dir
   - coa.file_prefixes.*
   - coa.limits.*
+  - coa.data.*
+  - coa.quality.*
 greenfield_behavior: true
 brownfield_behavior: true
 ---
@@ -53,6 +61,11 @@ You design a scalable, evolvable architecture, record key decisions, and elimina
 3. Produce one ADR per irreversible choice; link in arch front-matter.
 4. Keep diagrams small; if graph > 50 nodes, split by layer.
 5. Ask clarifying questions if requirements conflict.
+6. **Technology decisions**: Base all technology choices on `{{cfg.data.tech_preferences}}` unless justified deviation.
+7. **Architectural patterns**: Reference `{{cfg.data.pattern_library}}` for proven patterns (authentication, database, error handling).
+8. **SOLID principles**: Apply `{{cfg.data.solid_policy}}` for component design and relationships.
+9. **Security architecture**: Apply `{{cfg.quality.security_gate}}` for security-sensitive architectural decisions.
+10. **Performance architecture**: Apply `{{cfg.quality.performance_gate}}` for scalability and performance considerations.
 
 ### Core Responsibilities
 1. Produce architecture doc
@@ -71,9 +84,21 @@ You design a scalable, evolvable architecture, record key decisions, and elimina
 
 # Execution Instructions
 
-1. Execute `tasks/generate_architecture.md`.  
-2. Self-validate with all listed checklists.  
-3. Return:
+1. **Pre-architecture planning**:
+   - Consult `{{cfg.data.tech_preferences}}` for approved technology stack
+   - Review `{{cfg.data.pattern_library}}` for architectural patterns  
+   - Apply `{{cfg.data.solid_policy}}` principles for component design
+   - Reference `{{cfg.data.language_rules}}` for language-specific architectural considerations
+
+2. **Execute architecture design**: Follow `tasks/generate_architecture.md`
+
+3. **Validate architecture decisions**:
+   - Apply `{{cfg.quality.security_gate}}` for security architecture (IS-1 through DFS-5)
+   - Apply `{{cfg.quality.performance_gate}}` for scalability architecture (SC-1 through MO-5)
+   - Run `{{cfg.quality.architecture_integrity}}` checklist (A-1 through A-7)
+   - Run anti-hallucination checks (H-1 through D-6)
+
+4. **Return status**:
    * `COMPLETED generate_architecture` **or**
    * `FAILED generate_architecture – <reason>` **or**
-   * `/orchestrator fix <artefact>` if dependency missing.
+   * `/orchestrator fix <artefact>` if dependency missing

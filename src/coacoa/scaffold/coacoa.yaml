@@ -3,15 +3,25 @@ coa:
 
   # ---------- PATHS ----------
   paths:
+    # Unified Analysis Structure
+    analysis_dir:           coacoa/context/analysis/            # Main analysis directory
+    analysis_plan:          coacoa/context/analysis/plan.md     # Master analysis plan
+    analysis_artifacts:     coacoa/context/analysis/artifacts/  # JSON intelligence files
+    analysis_reports:       coacoa/context/analysis/reports/    # Individual task reports
+    analysis_consolidated:  coacoa/context/analysis/consolidated/ # Final consolidated outputs
+    
+    # Legacy Paths (for backward compatibility)
     analysis:        coacoa/context/analysis.md
-    module_map:      coacoa/context/intelligence/module_map.json
-    dep_graph:       coacoa/context/intelligence/dep_graph.json
-    dependencies:    coacoa/context/intelligence/dependencies.json
-    cycles:          coacoa/context/intelligence/cycles.json
-    complexity:      coacoa/context/intelligence/complexity.json
-    hotspots:        coacoa/context/intelligence/hotspots.json
-    coverage:        coacoa/context/intelligence/coverage.json
-    build_info:      coacoa/context/intelligence/build_info.json   
+    module_map:      coacoa/context/analysis/artifacts/architecture.json
+    dep_graph:       coacoa/context/analysis/artifacts/architecture.json
+    dependencies:    coacoa/context/analysis/artifacts/dependencies.json
+    cycles:          coacoa/context/analysis/artifacts/architecture.json
+    complexity:      coacoa/context/analysis/artifacts/complexity.json
+    hotspots:        coacoa/context/analysis/artifacts/git-analysis.json
+    coverage:        coacoa/context/analysis/artifacts/complexity.json
+    build_info:      coacoa/context/analysis/artifacts/build-info.json
+    
+    # Standard Paths
     docs_dir:        coacoa/docs/
     adr_dir:         coacoa/docs/adr/                 # Architecture Decision Records
 
@@ -21,9 +31,16 @@ coa:
     sharded:         true
     shard_dir:       coacoa/docs/prd
 
-  # ---------- UI / UX ----------
+  # ---------- TEMPLATES ----------
   templates:
-    ui_ux:           coacoa/templates/ui_ux.md       # Green- & brown-field reference
+    ui_ux:                    coacoa/templates/ui_ux.md                    # Green- & brown-field reference
+    codebase_analysis_master: coacoa/templates/codebase_analysis_master.md # Master analysis template
+    analysis_plan_template:   coacoa/templates/analysis_plan_template.md   # Plan generation template
+    progress_tracker:         coacoa/templates/progress_tracker.md         # Progress tracking utilities
+    
+  # ---------- SCHEMAS ----------
+  schemas:
+    artifacts:               coacoa/schemas/artifact_schemas.json          # JSON artifact validation schemas
 
   # ---------- ARCHITECTURE ----------
   arch:
@@ -39,10 +56,11 @@ coa:
 
   # ---------- DATA (shared knowledge) ----------
   data:
-    tech_prefs:      coacoa/data/tech_preferences.md
-    style_guides:    coacoa/data/style_guides/
-    pattern_library: coacoa/data/pattern_library/
-    language_rules:  coacoa/data/language_rules.md
+    tech_preferences: coacoa/data/tech_preferences.md
+    style_guides:     coacoa/data/style_guides/
+    pattern_library:  coacoa/data/pattern_library/
+    language_rules:   coacoa/data/language_rules.md
+    solid_policy:     coacoa/data/solid_policy.md
 
   # ---------- WORKFLOWS ----------
   workflows:
@@ -56,12 +74,45 @@ coa:
     qa:                   coacoa/quality/qa.md
     arch_integrity:       coacoa/quality/architecture_integrity.md
     build_integrity:      coacoa/quality/build_integrity.md
+    code_quality_gate:    coacoa/quality/code_quality_gate.md
+    security_gate:        coacoa/quality/security_gate.md
+    performance_gate:     coacoa/quality/performance_gate.md
 
   # ---------- LIMITS ----------
   limits:
     max_snippet_loc:      120        # LOC injected per story
     max_tokens_context:   12000      # Soft prompt budget
     refactor_batch_size:  200        # LOC per refactor step
+
+  # ---------- UNIFIED ANALYSIS ----------
+  analysis:
+    # Core Configuration
+    enterprise_mode:      true       # Enable enterprise-specific exclusions and features
+    unified_workflow:     true       # Use new unified analysis workflow
+    auto_mode_detection:  true       # Automatically detect Claude Code vs Cline execution mode
+    
+    # File Discovery & Processing
+    exclude_patterns:     []         # Custom exclusion patterns (overrides defaults)
+    token_estimation:     "enhanced" # enhanced | simple | ast_based
+    batch_affinity:       "directory" # directory | language | complexity
+    max_file_tokens:      6000       # Single file token limit (50% of context)
+    complexity_threshold: 15         # Cyclomatic complexity threshold for "complex" files
+    
+    # Execution Configuration
+    parallel_task_limit:  8          # Max parallel tasks for Claude Code mode
+    retry_failed_phases:  true       # Retry failed analysis phases
+    partial_results:      true       # Allow partial analysis results on failure
+    
+    # Quality & Validation
+    schema_validation:    true       # Validate all artifacts against schemas
+    evidence_requirement: true      # Require evidence-based findings only
+    cross_validation:     true      # Cross-validate findings between phases
+    
+    # Output Configuration
+    executive_summary:    true       # Generate executive summary
+    detailed_reports:     true       # Generate detailed phase reports
+    risk_prioritization:  true       # Prioritize findings by risk level
+    recommendations:      true       # Generate actionable recommendations
 
   # ---------- BRANCHING ----------
   branching:
