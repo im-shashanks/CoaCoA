@@ -15,7 +15,7 @@ CoaCoA v2.0 introduces a **unified codebase analysis workflow** that replaces th
 - **Limited enterprise support**: Basic analysis with separate consolidation
 
 ### After (Unified System)  
-- **Single command**: `/analyze-codebase` works for both IDEs
+- **Single command**: `/codebase-detection` works for both IDEs
 - **Planning-first approach**: All intelligence front-loaded into comprehensive plan
 - **Self-contained tasks**: No complex context transfers between tasks
 - **Enterprise-grade analysis**: 8-phase comprehensive analysis with executive reporting
@@ -25,7 +25,7 @@ CoaCoA v2.0 introduces a **unified codebase analysis workflow** that replaces th
 ## Migration Impact
 
 ### ✅ What Still Works
-- **All slash commands remain the same**: `/analyze-codebase` command unchanged  
+- **All slash commands remain the same**: `/codebase-detection` command unchanged  
 - **Configuration compatibility**: Existing `coacoa.yaml` settings preserved
 - **Quality gates**: All existing quality validation continues to work
 - **Output location**: Analysis results still in `coacoa/context/` directory
@@ -75,7 +75,7 @@ The following files have been removed as they are no longer needed:
 
 ### 1. For Existing Projects (No Action Required)
 
-**The unified workflow is backward compatible.** Your existing projects will automatically use the new system when you run `/analyze-codebase`.
+**The unified workflow is backward compatible.** Your existing projects will automatically use the new system when you run `/codebase-detection`.
 
 ### 2. For Custom Integrations
 
@@ -127,7 +127,7 @@ rm -f coacoa/context/analysis_state.json
 
 | Feature | Legacy System | Unified System |
 |---------|---------------|----------------|
-| **Command** | `/analyze-codebase` | `/analyze-codebase` ✅ Same |
+| **Command** | `/codebase-detection` | `/codebase-detection` ✅ Same |
 | **IDE Support** | Separate workflows | Unified with auto-detection |
 | **Planning** | Basic scope detection | Comprehensive upfront planning |
 | **Task Management** | Complex context transfers | Self-contained tasks |
@@ -166,7 +166,7 @@ rm -f coacoa/context/analysis_state.json
 ```bash
 Error: Cannot find tasks/analyze_codebase_cline.md
 ```
-**Solution**: The legacy task files were removed. Use `/analyze-codebase` which now handles both Claude Code and Cline automatically.
+**Solution**: The legacy task files were removed. Use `/codebase-detection` which now handles both Claude Code and Cline automatically.
 
 #### Issue: Old analysis outputs remain
 ```bash  
@@ -227,7 +227,7 @@ If you need to temporarily rollback to legacy behavior:
 
 ## Next Steps
 
-1. ✅ **Try the new workflow**: Run `/analyze-codebase` on a test project
+1. ✅ **Try the new workflow**: Run `/codebase-detection` on a test project
 2. ✅ **Review executive summaries**: Check the new consolidated reporting format  
 3. ✅ **Update documentation**: Update any internal documentation referencing old workflows
 4. ✅ **Train team**: Share this migration guide with your development team

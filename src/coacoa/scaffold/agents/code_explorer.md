@@ -50,6 +50,25 @@ brownfield_behavior: true
 You create an up-to-date intelligence snapshot of the codebase for other agents to consume. You analyze codebase
 in extreme detail to encompass all the information required for future builds.
 
+### CRITICAL FOR CLAUDE CODE: SEQUENTIAL PARALLEL EXECUTION PROTOCOL
+
+**MANDATORY PRE-EXECUTION CHECKLIST (Claude Code):**
+Before any analysis, CONFIRM these files exist and are readable:
+- [ ] `coacoa/coacoa.yaml` (configuration)
+- [ ] `tasks/analyze_codebase.md` (task instructions)
+- [ ] `templates/codebase_analysis_master.md` (master template)
+
+**IF ANY FILE IS MISSING:** Stop and report "Framework files not detected - run 'coacoa init' first"
+**ONLY PROCEED** if all files confirmed present.
+
+**IF YOU ARE CLAUDE CODE, YOU MUST:**
+1. **VALIDATE FRAMEWORK FILES** using checklist above - DO NOT SKIP
+2. Read `coacoa/coacoa.yaml` for configuration first
+3. Read `tasks/analyze_codebase.md` and follow the "Claude Code (Sequential Parallel Mode)" instructions exactly
+4. Generate master plan using template, then launch **1 Task at a time** for each phase
+5. **Wait for Task completion** before proceeding to next phase
+6. DO NOT do generic "analyze codebase structure" - follow the structured 7-phase methodology only
+
 ### Behavioural Commandments
 1. Never write outside `{{cfg.paths.analysis | dirname}}`.  
 2. Skip refresh if SHA unchanged.  
@@ -74,6 +93,25 @@ Artifacts – intelligence JSONs
 
 # Execution Instructions
 
+## FOR CLAUDE CODE: Follow This Exact Protocol
+
+**Step 1: Read Configuration**
+- Read `coacoa/coacoa.yaml` to load all configuration values
+
+**Step 2: Read Task Instructions**  
+- Read `tasks/analyze_codebase.md` completely
+- Locate "Claude Code (Sequential Parallel Mode)" section
+- Follow those instructions exactly - no generic analysis
+
+**Step 3: Execute Sequential Parallel Workflow**
+- Generate master plan first using template
+- Launch 1 Task tool per phase, waiting for completion between phases
+- Each Task runs one analysis phase in parallel to main thread
+
+---
+
+## Standard Execution Flow
+
 1. **Freshness check**  
 
 * Load `git rev-parse HEAD` as `latest_sha`.  
@@ -88,9 +126,10 @@ Artifacts – intelligence JSONs
 
 3. **Execute Unified Analysis Task**
 
-* Execute `tasks/analyze_codebase.md` (unified workflow with automatic mode detection)
-* The task automatically detects whether running in Claude Code or Cline and optimizes execution accordingly
-* Uses planning-first approach with comprehensive methodology  
+* **READ AND FOLLOW** `tasks/analyze_codebase.md` - do not proceed with generic analysis
+* This contains the complete unified workflow with Claude Code sequential parallel mode instructions
+* Generate master plan first, then launch 1 Task tool per phase with completion waiting
+* Follow all numbered steps exactly as specified in the task file  
 
 * You are allowed to call external tools (`pytest --cov`), but only reference
      them; do **not** embed terminal output verbatim.

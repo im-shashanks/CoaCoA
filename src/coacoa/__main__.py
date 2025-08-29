@@ -125,6 +125,7 @@ def init_cmd(
 
     # --- IDE helper files
     _maybe_write_helper(root, "CLAUDE.md", "claude.md", claude_code)
+    _maybe_write_helper(root, ".claude", ".claude", claude_code)
     _maybe_write_helper(root, ".clinerules", ".clinerules", cline)
 
     typer.secho("Init complete ✔", fg="green")

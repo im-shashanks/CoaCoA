@@ -84,7 +84,7 @@ Start with an idea and build a complete application:
 Enhance existing codebases with unified intelligent analysis:
 
 ```text
-/analyze-codebase        # Single command for comprehensive analysis
+/codebase-detection        # Single command for comprehensive analysis
 /pm new-prd             # Generate PRD based on analysis findings
 /architect finalize-arch # Create architecture aligned with existing codebase
 /orchestrator run       # Execute implementation workflow
@@ -95,7 +95,7 @@ Enhance existing codebases with unified intelligent analysis:
 ## 🚀 What's New in v2.0
 
 ### **Unified Codebase Analysis** 
-- **Single Command**: `/analyze-codebase` works seamlessly with both Claude Code and Cline
+- **Single Command**: `/codebase-detection` works seamlessly with both Claude Code and Cline
 - **Automatic Mode Detection**: Intelligently detects your IDE and optimizes execution
 - **Enterprise-Grade Analysis**: 8-phase comprehensive analysis including security, compliance, and architecture
 - **Executive Reporting**: Risk-prioritized findings with actionable recommendations for technical leadership
@@ -223,7 +223,7 @@ CoaCoA integrates seamlessly with AI-powered IDEs through slash commands:
 
 | Command | Purpose | Use Case |
 |---------|---------|----------|
-| `/analyze-codebase` | **Unified enterprise codebase analysis** | **Single command for comprehensive analysis (works with both Claude Code & Cline)** |
+| `/codebase-detection` | **Unified enterprise codebase analysis** | **Single command for comprehensive analysis (works with both Claude Code & Cline)** |
 | `/analyst init "<idea>"` | Start requirement gathering | New project initialization |
 | `/pm new-prd` | Generate product requirements | Define project scope |
 | `/ux-designer make-ui` | Create UX specifications | Design user interfaces |
@@ -335,7 +335,7 @@ A: Yes, all quality gates are configurable through the `coacoa.yaml` file. You c
 A: CoaCoA is designed with enterprise requirements in mind, including human oversight, comprehensive auditing, quality enforcement, and compliance features required by large organizations.
 
 **Q: What's new in the unified codebase analysis?**
-A: The new `/analyze-codebase` command provides enterprise-grade analysis through a single interface that automatically detects your IDE (Claude Code vs Cline) and optimizes execution accordingly. It includes security scanning, compliance checks, and generates executive-ready reports with actionable recommendations.
+A: The new `/codebase-detection` command provides enterprise-grade analysis through a single interface that automatically detects your IDE (Claude Code vs Cline) and optimizes execution accordingly. It includes security scanning, compliance checks, and generates executive-ready reports with actionable recommendations.
 
 **Q: How does CoaCoA handle existing code standards?**
 A: The unified analysis automatically detects existing patterns, conventions, and architectural decisions, then ensures all new code follows established practices while providing specific improvement recommendations prioritized by risk level.

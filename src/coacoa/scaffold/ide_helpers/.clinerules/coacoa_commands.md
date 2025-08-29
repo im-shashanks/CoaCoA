@@ -1,21 +1,21 @@
 # CoaCoA rules for Cline
 
-- Always read `coacoa/coacoa.yaml` for configuration values before acting.
-- Commands map 1:1 with agents. Example:
-  - `/analyze-codebase` → use `coacoa/agents/code_explorer.md`.
-  - `/pm new-prd` → use `coacoa/agents/pm.md` with `coacoa/templates/prd.md`.
-  - When a required artefact path in `coacoa.yaml` does not exist, call `/orchestrator fix <artefact>`.
+Always read `coacoa/coacoa.yaml` for configuration values before acting.
 
-- AGENT SELECTION HINTS
+Commands map 1:1 with agents:
+- `/codebase-detection` → use `coacoa/agents/code_explorer.md`
+- `/pm new-prd` → use `coacoa/agents/pm.md` 
+- `/architect finalize-arch` → use `coacoa/agents/architect.md`
 
-  - If `coacoa/context/analysis.md` is **absent**, default to greenfield flows (analyst → pm → architect).
-  - If present, default to brownfield flows (code-explorer → pm → architect / sm).
+When a required artifact path in `coacoa.yaml` does not exist, call `/orchestrator fix <artifact>`.
+
+Note: CoaCoA slash commands are framework directives, not shell commands.
 
 # CoaCoA command palette for Cline
 
 commands:
 
-  - trigger: /analyze-codebase
+  - trigger: /codebase-detection
     description: Initialise Code-Intelligence snapshot (code-explorer)
     agent: code-explorer
     file: coacoa/agents/code_explorer.md
