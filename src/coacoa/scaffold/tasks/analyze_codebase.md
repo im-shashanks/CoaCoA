@@ -1,223 +1,282 @@
-# Task · analyze_codebase
+# Task · analyze_codebase (Unified Workflow)
 
 ## Assigned to: code-explorer agent
 
 > **Objective**  
-> Produce a complete Code-Intelligence snapshot for the current repository, persisting artefacts
-> to the paths defined in `coacoa.yaml -> coa.paths.*`.  
-> These artefacts must be **idempotent** (re-running yields identical JSON when repo unchanged).
+> Execute comprehensive enterprise codebase analysis using unified methodology. Single entry point for both Claude Code (parallel) and Cline (sequential) workflows, with intelligent execution mode detection and comprehensive planning phase.
 
 ---
 
-## 0 · Inputs
+## 0 · Execution Mode Detection
 
-| Config key                                  | Expected value / example                    |
-|---------------------------------------------|---------------------------------------------|
-| `coa.paths.analysis`                        | `coacoa/context/analysis.md`                       |
-| `coa.paths.module_map`                      | `coacoa/context/intelligence/module_map.json`      |
-| `coa.paths.dep_graph`                       | `coacoa/context/intelligence/dep_graph.json`       |
-| `coa.paths.complexity`                      | `coacoa/context/intelligence/complexity.json`      |
-| `coa.paths.hotspots`                        | `coacoa/context/intelligence/hotspots.json`        |
-| `coa.paths.coverage`                        | `coacoa/context/intelligence/coverage.json`        |
-| `coa.limits.max_tokens_context`             | Prompt budget for any summarisation step    |
-| Exclude globs                               | `.git/ , coacoa/ , .venv, .env, , **/dist , **/node_modules , .egg , .pyc , other files that are not important for codebase analysis` |
+**Automatic Mode Selection:**
+- **Claude Code**: If Task tool available → Parallel execution mode
+- **Cline**: If Task tool unavailable → Sequential execution mode
+
+**Configuration Reading:**
+- Load `{{cfg.analysis}}` settings from `coacoa.yaml`
+- Apply enterprise mode settings if enabled
+- Initialize central analysis directory structure
 
 ---
 
-## 1 · Language & file discovery
+## 1 · Comprehensive Planning Phase
 
-1. Start at repo root (file that contains `coacoa/` folder).  
-2. Walk filesystem; build table:
+### 1.1 · Generate Master Analysis Plan
 
-   ```json
-   {
-     "<relative_path>": {
-       "lang": "python|typescript|java|go|rust|cpp|…",
-       "loc": 123,
-       "is_test": true|false
-     },
-     …
-   }
-3. Persist language histogram (languages:) & total LOC in step-2 output bundle.
+1. **Invoke Planning Template:**
+   - Use `templates/codebase_analysis_master.md` to generate detailed plan
+   - Plan contains complete methodology for each analysis phase
+   - Each phase has self-contained instructions and output specifications
 
-## 2 · Module Map (module_map.json)
+2. **Repository Assessment:**
+   - Scan repository structure and estimate scope
+   - Detect primary languages, build systems, and architecture patterns
+   - Calculate estimated analysis duration and resource requirements
 
-   ```jsonc
-   {
-      "moduleName": {
-         "file": "src/foo/bar.py",
-         "classes": [
-            {"name": "UserService", "line_start": 10, "line_end": 120}
-         ],
-         "functions": [
-            {"name": "load_users", "line_start": 124, "line_end": 199}
-         ]
-      },
-      …
-   }
+3. **Plan Customization:**
+   - Adapt plan based on detected technologies and repository size
+   - Add enterprise-specific phases if `coa.analysis.enterprise_mode` enabled
+   - Set priority levels based on repository characteristics
+
+4. **Create Central Plan:**
+   - Write comprehensive plan to `coacoa/context/analysis/plan.md`
+   - Include detailed task breakdown with complete instructions
+   - Initialize progress tracking system
+
+### 1.2 · Directory Structure Setup
+
+```
+coacoa/context/analysis/
+├── plan.md                    # Master plan with progress tracking
+├── artifacts/                 # JSON intelligence outputs
+│   ├── repo-intelligence.json
+│   ├── build-info.json
+│   ├── architecture.json
+│   ├── dependencies.json
+│   ├── complexity.json
+│   ├── security-analysis.json
+│   ├── git-analysis.json
+│   └── performance-analysis.json
+├── reports/                   # Individual phase analysis reports
+│   ├── task-001-analysis.md
+│   ├── task-002-analysis.md
+│   └── ...
+└── consolidated/              # Final consolidated outputs
+    ├── executive-summary.md
+    └── recommendations.md
+```
+
+---
+
+## 2 · Execution Mode Routing
+
+### 2.1 · Claude Code: Parallel Execution Mode
+
+**Prerequisites:**
+- Verify Task tool availability
+- Confirm plan.md exists with complete task breakdown
+- Initialize progress monitoring system
+
+**Parallel Task Orchestration:**
+1. **Parse Analysis Plan:**
+   - Extract individual tasks from `plan.md`
+   - Identify dependencies and execution order
+   - Prepare task-specific contexts from plan sections
+
+2. **Launch Parallel Tasks:**
+   ```
+   For each task in analysis_plan.tasks:
+     Use Task tool with:
+     - description: "Execute {task.name}"
+     - subagent_type: "general-purpose" 
+     - prompt: """
+       You are executing {task.name} from the comprehensive codebase analysis plan.
+       
+       Complete Instructions:
+       {task.detailed_instructions_from_plan}
+       
+       Required Outputs:
+       - Artifact: {task.output_artifact}
+       - Report: {task.output_report}
+       
+       Upon completion:
+       1. Create both required output files
+       2. Update status in plan.md: "✅ {task.name} Complete"
+       3. Return "COMPLETED {task.name}"
+       """
    ```
 
-**Implementation hints (Python-centric but extendable):**
+3. **Progress Monitoring:**
+   - Monitor plan.md for task completion status updates
+   - Validate required outputs are created for each completed task
+   - Handle task failures and retry logic
 
-- moduleName = dotted path (src.foo.bar).
-- Use Python ast or tree-sitter bindings for other languages to enumerate top-level defs.
-- Exclude private (_name) items unless referenced elsewhere.
+4. **Completion Detection:**
+   - When all tasks show "✅ Complete" status in plan.md
+   - Verify all artifacts and reports exist
+   - Proceed to consolidation phase
 
-## 3 · Dependency Graph (dep_graph.json)
+### 2.2 · Cline: Sequential Execution Mode
 
-   ```json
-   [
-      ["src/foo/bar.py", "src/db/client.py"],
-      ["src/foo/bar.py", "libs/common/log.py"],
-   …
-   ]
+**Prerequisites:**
+- Confirm plan.md exists with complete task breakdown
+- Initialize sequential task state tracking
+
+**Sequential Task Execution:**
+1. **Current Task Selection:**
+   - Find first task in plan.md with "⏳ Pending" status
+   - If no pending tasks exist, proceed to consolidation
+
+2. **Task Context Preparation:**
+   - Extract complete instructions from plan section
+   - Prepare self-contained task context (no external dependencies)
+   - Set current task status to "🔄 In Progress" in plan.md
+
+3. **Task Execution:**
+   - Execute current task using instructions from plan
+   - Create required artifact and report files
+   - Update task status to "✅ Complete" in plan.md
+
+4. **Next Task Creation Protocol:**
+   ```markdown
+   Upon task completion, ALWAYS follow this protocol:
+   
+   a) **Check Plan Status:**
+      - Scan plan.md for next task with "⏳ Pending" status
+      - If found: Create next task
+      - If none: Proceed to final consolidation
+   
+   b) **Create Next Task:**
+      I have completed {current_phase_name}.
+      
+      Next phase: {next_phase_name}
+      
+      **New Task Creation:**
+      Please execute Phase {N}: {next_phase_name}
+      
+      **Complete Instructions:**
+      Follow detailed methodology in plan.md section "{next_phase_section}"
+      
+      **Required Outputs:**
+      - Artifact: {artifact_path}
+      - Report: {report_path}
+      
+      **Upon Completion:**
+      1. Create both required output files
+      2. Update plan.md: mark phase as "✅ Complete"
+      3. Create next task following this same protocol
+      4. If no more phases, proceed to consolidation
+      
+      **Context Reference:**
+      - Master plan: coacoa/context/analysis/plan.md
+      - Progress: Phase {N-1} complete → Phase {N} starting
+      - All instructions self-contained in plan
+   
+   c) **Consolidation Trigger:**
+      If all 7 analysis phases complete, create final consolidation task:
+      
+      "All analysis phases complete. Execute final consolidation phase using plan.md section 'Phase 8: Final Consolidation'."
    ```
 
-*Edge includes only direct file-level imports / requires / #include.*
-*Post-process to remove duplicates.*
+5. **Error Handling:**
+   - If task fails: Update plan.md with failure status and reason
+   - Create retry task or escalate to user based on failure type
+   - Maintain progress tracking through failures
 
-## 3.2 · Build/Run system (`build_info.json`)
+---
 
-   > **Schema**
+## 3 · Consolidation Phase
 
-   ```json
-      {
-      "ecosystem": "brazil",           // mvn | gradle | npm | bazel | make | brazil | …
-      "detected_files": [".brazil-project.json", "pom.xml"],
-      "commands": {
-         "build": "brazil-build build",
-         "test":  "brazil-test unit",
-         "lint":  "python -m ruff",
-         "run":   "brazil-run LocalMain"
-         }
-      }
-      {
-      "ecosystem": "python",
-      "detected_files": ["pyproject.toml", ".venv"],
-      "commands": {
-         "build": "${VENV}/bin/pip install -e .[dev]",
-         "test":  "${VENV}/bin/pytest -q",
-         "lint":  "${VENV}/bin/python -m ruff",
-         "type":  "${VENV}/bin/mypy --strict src/",
-         "run":   "${VENV}/bin/python -m src.coacoa.__main__ --help"
-         }
-      }
-   ```
+### 3.1 · Artifact Validation
+- **JSON Validation:** Ensure all artifact files parse correctly
+- **Schema Compliance:** Validate against defined schemas in plan
+- **Completeness Check:** Verify all required fields populated
+- **Cross-Reference Validation:** Check consistency between artifacts
 
-**Detection hints**
-•	Brazil: .brazil-build/ folder or .brazil-project.json.
-•	Maven: pom.xml.
-•	Gradle: build.gradle or settings.gradle.
-•	Node: package.json with scripts.
-•	Bazel: BUILD files at repo root.
-•	Make: Makefile with test: or build: targets.
+### 3.2 · Executive Summary Generation
+1. **Risk Assessment Aggregation:**
+   - Compile critical, high, medium, low priority findings
+   - Calculate repository health score (0-100)
+   - Identify immediate action items
 
-_If multiple ecosystems, pick the one at repo root; list others under secondary:[]._
+2. **Executive Dashboard Creation:**
+   - Repository statistics and technology summary
+   - Architecture and dependency analysis highlights
+   - Security and compliance status overview
+   - Quality metrics and technical debt assessment
 
-## 4 · Package dependencies (`dependencies.json`)
+3. **Actionable Recommendations:**
+   - Prioritized improvement roadmap
+   - Resource requirements and time estimates  
+   - Team assignment suggestions
+   - Implementation sequence recommendations
 
-> **Schema**
+### 3.3 · Final Output Assembly
+- **Consolidated Executive Summary:** `consolidated/executive-summary.md`
+- **Detailed Recommendations:** `consolidated/recommendations.md`
+- **Artifact Index:** `consolidated/artifact-index.json`
+- **Analysis Metadata:** `consolidated/analysis-metadata.json`
 
-   ```json
-   {
-      "ecosystem": "python",
-      "source": "pyproject.toml",
-      "dependencies": [
-         {"name": "fastapi", "version": "0.110.0"},
-         {"name": "sqlalchemy", "version": "2.0.25"}
-      ]
-   }
-   ```
-**Extraction hints:**
-- Python: read pyproject.toml or requirements*.txt.
-- Node: parse package.json.
-- Go: go list -m -json all.
-- Rust: cargo metadata --format-version 1.
-- If multiple ecosystems, output an array of such objects.
+---
 
-## 5 · Circular-dependency report (`cycles.json`)
+## 4 · Quality Gates & Validation
 
-> **Schema**
+### 4.1 · Comprehensive Validation Checklist
+- [ ] All planned tasks completed successfully
+- [ ] Required artifacts present and valid
+- [ ] Analysis reports comprehensive and specific
+- [ ] Executive summary actionable and clear
+- [ ] No hallucinated information (all findings evidence-based)
+- [ ] Proper risk prioritization and categorization
 
-   ```
-      [
-         ["src/db/client.py", "src/db/__init__.py", "src/db/client.py"],
-         ["src/service/auth.py", "src/service/user.py", "src/service/auth.py"]
-      ]
-   ```
+### 4.2 · Success Criteria
+- Repository health score calculated
+- All critical issues identified and documented
+- Actionable recommendations provided with priorities
+- Executive summary suitable for technical leadership
 
-**Algorithm**
- 1. Build adjacency list from dep_graph.json.
- 2. Run Tarjan or Kosaraju SCC algorithm.
- 3. Persist each cycle as an ordered list of file paths (first == last for clarity).
- 4. Append a brief note to analysis.md § Complex Files if any cycles exist.
+---
 
-## 6 · Complexity metrics (complexity.json)
+## 5 · Completion Protocol
 
-   ```json
-   {
-      "src/foo/bar.py": {
-         "cyclomatic": 18,
-         "maint_index": 54.2,
-         "h_cognitive": 12        // optional: Halstead, cognitive
-      },
-      …
-   }
-   ```
-**Guidelines**
- • Use radon (radon cc -j) for Python; fall back to average nesting depth for other langs.
- • Any file with cyclomatic >= 20 or maint_index <= 40 is flagged “complex” later.
+**Success Return Message:**
+```
+COMPLETED analyze_codebase
 
-## 7 · Git churn & hotspots (hotspots.json)
+✅ Comprehensive analysis complete
+📊 Repository health score: {score}/100  
+🔍 {critical_count} critical issues found
+📋 {total_recommendations} recommendations generated
+📁 Results available in: coacoa/context/analysis/consolidated/
+```
 
-   ```json
-   {
-      "src/foo/bar.py": {
-         "churn": 37,             // commits touching file
-         "last_commit": "2025-07-18T14:25:01Z",
-         "is_complex": true,
-         "hotspot_score": 666     // churn × cyclomatic
-      },
-      …
-   }
-   ```
-**Steps:**
- 1. If .git/ present, run git log --follow --pretty=format: --name-only.
- 2. Count touches per file (churn).
- 3. Compute hotspot_score = churn * max(cyclomatic, 1).
- 4. Mark top-10 % scores as hotspots.
+**Failure Return Message:**
+```
+FAILED analyze_codebase: {specific_reason}
 
-## 8 · Test-coverage (coverage.json)
+❌ Analysis incomplete: {failure_details}
+🔧 Required actions: {remediation_steps}
+📁 Partial results available in: coacoa/context/analysis/
+```
 
-Only for languages with coverage tooling (Python -→ pytest --cov --cov-report=json).
-Store simple float per file.
+---
 
-   ```json
-   {"src/foo/bar.py": 0.62, …}
-   ```
+## 6 · Enterprise Integration Notes
 
-_If tooling absent, omit file → agent consumers treat as null._
+**Large Repository Handling:**
+- Automatic scope reduction for repositories > 100K files
+- Progressive analysis with summary-first approach
+- Resource-aware batch sizing based on available context
 
-## 9 · analysis.md executive summary
+**Enterprise Security:**
+- Credential scanning with enterprise patterns
+- Compliance framework integration
+- Internal package recognition and analysis
 
-**Sections (Markdown):**
- 1. Repo Stats – languages, total LOC, #tests.
- 2. Complex Files – table top-15 by cyclomatic.
- 3. Hotspots – table top-15 by hotspot_score.
- 4. Coverage Gaps – files < 70 % coverage.
- 5. Next-Step Suggestions – bullet list for PO / Architect (e.g., “Refactor src/foo/bar.py”).
-Limit entire file to ≤ {{cfg.limits.max_tokens_context}} tokens.
+**Quality Assurance:**
+- Anti-hallucination validation at each phase
+- Evidence-based findings requirement
+- Cross-validation between analysis phases
 
-## 10 · Validation
-
-**Run Link-Integrity checklist items:**
- • All JSON paths exist & are parseable.
- • All file paths referenced exist on disk.
- • Required keys present.
-
-_If any validation fails → emit /orchestrator fix analyze_codebase-validation._
-
-## 11 · Outputs
-
-Write artefacts to disks paths configured in § 0.
-Return the string: `COMPLETED analyze_codebase` for orchestrator consumption.
+This unified workflow provides enterprise-grade codebase analysis through a single, consistent interface while optimizing execution for each tool's capabilities.

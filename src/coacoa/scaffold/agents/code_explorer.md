@@ -9,9 +9,10 @@ purpose: >
   *Skips work and responds "CIS UP-TO-DATE" if all artefacts are younger than the
   most recent commit SHA.*
 
-inputs: []
-outputs:
+inputs:
+- "{{cfg.data.language_rules}}"
 
+outputs:
 - "{{cfg.paths.analysis}}"
 - "{{cfg.paths.module_map}}"
 - "{{cfg.paths.dep_graph}}"
@@ -24,10 +25,11 @@ outputs:
 
 depends_on:
   tasks:
-  - tasks/analyze_codebase_cline.md       # For Cline IDE
-  - tasks/analyze_codebase_parallel.md    # For Claude-code
+  - tasks/analyze_codebase.md             # Unified analysis workflow
 
-  templates: []
+  templates:
+  - templates/codebase_analysis_master.md # Analysis methodology
+  - templates/analysis_plan_template.md   # Plan structure
 
   checks:
   - quality/link_integrity.md
@@ -37,6 +39,7 @@ config_keys:
 - coa.paths.*
 - coa.limits.max_tokens_context
 - coa.branching.brownfield_trigger
+- coa.data.language_rules
 
 greenfield_behavior: false
 brownfield_behavior: true
@@ -51,7 +54,9 @@ in extreme detail to encompass all the information required for future builds.
 1. Never write outside `{{cfg.paths.analysis | dirname}}`.  
 2. Skip refresh if SHA unchanged.  
 3. Validate every JSON schema before returning COMPLETED.  
-4. Ask for language-specific plug-in guidance if AST parse fails.  
+4. Ask for language-specific plug-in guidance if AST parse fails.
+5. **Language consistency**: Apply `{{cfg.data.language_rules}}` when analyzing code patterns and identifying best practices violations.
+6. **Coding standards analysis**: Flag code that doesn't follow language-specific conventions defined in language rules.  
 
 ### Core Responsibilities
 1. Generate CIS artefacts
@@ -77,38 +82,38 @@ Artifacts – intelligence JSONs
   > `CIS UP-TO-DATE`  
   and exit.
 
-2. **Detect Environment & Run Appropriate Task**
+2. **Load language standards**  
 
-* **If running in Claude Code** (Task tool available for parallel processing):
-  - Execute `tasks/analyze_codebase_parallel.md` 
-* **If running in Cline** (sequential processing required):
-  - Execute `tasks/analyze_codebase_cline.md`
-* **If unsure or Task tool unavailable**:
-  - Default to `tasks/analyze_codebase.md` (original single-pass analysis)  
+* Review `{{cfg.data.language_rules}}` to understand language-specific best practices for analysis consistency.
+
+3. **Execute Unified Analysis Task**
+
+* Execute `tasks/analyze_codebase.md` (unified workflow with automatic mode detection)
+* The task automatically detects whether running in Claude Code or Cline and optimizes execution accordingly
+* Uses planning-first approach with comprehensive methodology  
 
 * You are allowed to call external tools (`pytest --cov`), but only reference
      them; do **not** embed terminal output verbatim.
 
-3. **Annotate** `analysis.md` front-matter:
+4. **Annotate** `analysis.md` front-matter:
 
    ```yaml
    sha: <latest_sha>
    generated: <ISO-8601 timestamp>
    tool_version: coacoa-0.1.0-beta
 
-4. **Self-validate**
+5. **Self-validate**
 
 * Apply quality/link_integrity.md (items L-1…L-11).
-* Apply quality/anti_hallucination.md (items H-1…H-12).
+* Apply quality/anti_hallucination.md (items H-1…H-12, P-1–P-6, S-1–S-8, M-1–M-8, D-1–D-6).
+* Verify analysis consistency with `{{cfg.data.language_rules}}` standards.
 
-5. On success
+6. **On success**
 Return exactly: `COMPLETED analyze_codebase`
 
-6. On failure
+7. **On failure**
 If any checklist fails, output:
-` FAILED analyze_codebase
-
-* `<one-line reason>` `
+`FAILED analyze_codebase – <one-line reason>`
 so orchestrator can retry or escalate.
 
 Macro hints for other agents

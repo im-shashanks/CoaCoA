@@ -14,10 +14,6 @@
 # CoaCoA command palette for Cline
 
 commands:
-  - trigger: /prep-codebase-analysis
-    description: Partition codebase into token-bounded batches (code-explorer)
-    agent: None
-    file: coacoa/tasks/prep_codebase_analysis.md
 
   - trigger: /analyze-codebase
     description: Initialise Code-Intelligence snapshot (code-explorer)
