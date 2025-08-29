@@ -1,0 +1,410 @@
+{
+  "repo_intelligence_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["repository_stats", "technology_stack", "structure_assessment"],
+    "properties": {
+      "repository_stats": {
+        "type": "object",
+        "required": ["total_files", "languages", "primary_language", "loc_by_language"],
+        "properties": {
+          "total_files": {"type": "integer", "minimum": 0},
+          "languages": {"type": "object", "patternProperties": {".*": {"type": "integer"}}},
+          "primary_language": {"type": "string"},
+          "loc_by_language": {"type": "object", "patternProperties": {".*": {"type": "integer"}}},
+          "test_coverage_estimate": {"type": "number", "minimum": 0, "maximum": 1},
+          "documentation_files": {"type": "integer", "minimum": 0}
+        }
+      },
+      "technology_stack": {
+        "type": "object",
+        "required": ["primary_frameworks", "build_tools", "testing_frameworks", "architecture_style"],
+        "properties": {
+          "primary_frameworks": {"type": "array", "items": {"type": "string"}},
+          "build_tools": {"type": "array", "items": {"type": "string"}},
+          "testing_frameworks": {"type": "array", "items": {"type": "string"}},
+          "architecture_style": {"type": "string", "enum": ["monolith", "microservices", "layered", "clean", "hexagonal", "unknown"]}
+        }
+      },
+      "structure_assessment": {
+        "type": "object",
+        "required": ["follows_conventions", "has_tests", "has_documentation", "monorepo"],
+        "properties": {
+          "follows_conventions": {"type": "boolean"},
+          "has_tests": {"type": "boolean"},
+          "has_documentation": {"type": "boolean"},
+          "monorepo": {"type": "boolean"},
+          "entry_points": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  },
+
+  "build_info_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["primary_build_system"],
+    "properties": {
+      "primary_build_system": {
+        "type": "object",
+        "required": ["type", "detected_files", "commands"],
+        "properties": {
+          "type": {"type": "string"},
+          "version": {"type": "string"},
+          "detected_files": {"type": "array", "items": {"type": "string"}},
+          "multi_module": {"type": "boolean"},
+          "modules": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "path", "type"],
+              "properties": {
+                "name": {"type": "string"},
+                "path": {"type": "string"},
+                "type": {"type": "string", "enum": ["application", "library", "service", "test"]}
+              }
+            }
+          },
+          "commands": {
+            "type": "object",
+            "properties": {
+              "build": {"type": "string"},
+              "test": {"type": "string"},
+              "lint": {"type": "string"},
+              "format": {"type": "string"},
+              "run": {"type": "string"},
+              "clean": {"type": "string"}
+            }
+          }
+        }
+      },
+      "ci_cd": {
+        "type": "object",
+        "properties": {
+          "platforms": {"type": "array", "items": {"type": "string"}},
+          "build_stages": {"type": "array", "items": {"type": "string"}},
+          "deployment_targets": {"type": "array", "items": {"type": "string"}},
+          "quality_gates": {"type": "array", "items": {"type": "string"}}
+        }
+      },
+      "containerization": {
+        "type": "object",
+        "properties": {
+          "docker_enabled": {"type": "boolean"},
+          "kubernetes_ready": {"type": "boolean"},
+          "container_files": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    }
+  },
+
+  "architecture_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["modules", "dependency_graph"],
+    "properties": {
+      "modules": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "required": ["file_path", "components"],
+            "properties": {
+              "file_path": {"type": "string"},
+              "components": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["type", "name", "line_range"],
+                  "properties": {
+                    "type": {"type": "string", "enum": ["class", "function", "interface", "enum", "struct"]},
+                    "name": {"type": "string"},
+                    "line_range": {"type": "array", "items": {"type": "integer"}, "minItems": 2, "maxItems": 2},
+                    "public_methods": {"type": "array", "items": {"type": "string"}},
+                    "access_level": {"type": "string", "enum": ["public", "private", "protected", "internal"]}
+                  }
+                }
+              },
+              "dependencies": {"type": "array", "items": {"type": "string"}},
+              "exports": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        }
+      },
+      "dependency_graph": {
+        "type": "object",
+        "required": ["internal_dependencies"],
+        "properties": {
+          "internal_dependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["from", "to", "type"],
+              "properties": {
+                "from": {"type": "string"},
+                "to": {"type": "string"},
+                "type": {"type": "string", "enum": ["import", "inheritance", "composition", "aggregation"]},
+                "coupling_strength": {"type": "number", "minimum": 0, "maximum": 1},
+                "symbols": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          },
+          "external_dependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "usage_locations"],
+              "properties": {
+                "name": {"type": "string"},
+                "version": {"type": "string"},
+                "usage_locations": {"type": "array", "items": {"type": "string"}},
+                "usage_intensity": {"type": "string", "enum": ["light", "medium", "heavy"]},
+                "license": {"type": "string"}
+              }
+            }
+          },
+          "circular_dependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["cycle", "severity"],
+              "properties": {
+                "cycle": {"type": "array", "items": {"type": "string"}},
+                "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "complexity_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["file_metrics", "quality_summary"],
+    "properties": {
+      "file_metrics": {
+        "type": "object",
+        "patternProperties": {
+          ".*": {
+            "type": "object",
+            "required": ["lines_of_code", "complexity_level"],
+            "properties": {
+              "cyclomatic_complexity": {"type": "integer", "minimum": 0},
+              "cognitive_complexity": {"type": "integer", "minimum": 0},
+              "maintainability_index": {"type": "number", "minimum": 0, "maximum": 100},
+              "lines_of_code": {"type": "integer", "minimum": 0},
+              "complexity_level": {"type": "string", "enum": ["low", "medium", "high", "very_high"]},
+              "technical_debt_minutes": {"type": "number", "minimum": 0},
+              "duplication_percentage": {"type": "number", "minimum": 0, "maximum": 100}
+            }
+          }
+        }
+      },
+      "quality_summary": {
+        "type": "object",
+        "required": ["high_complexity_files", "technical_debt_hours", "maintainability_score"],
+        "properties": {
+          "high_complexity_files": {"type": "integer", "minimum": 0},
+          "very_high_complexity_files": {"type": "integer", "minimum": 0},
+          "technical_debt_hours": {"type": "number", "minimum": 0},
+          "maintainability_score": {"type": "number", "minimum": 0, "maximum": 10},
+          "code_duplication_ratio": {"type": "number", "minimum": 0, "maximum": 1}
+        }
+      },
+      "anti_patterns": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["type", "location", "severity"],
+          "properties": {
+            "type": {"type": "string", "enum": ["god_class", "long_method", "dead_code", "code_duplication", "feature_envy"]},
+            "location": {"type": "string"},
+            "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+            "description": {"type": "string"}
+          }
+        }
+      }
+    }
+  },
+
+  "security_analysis_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["vulnerability_scan", "compliance_assessment"],
+    "properties": {
+      "vulnerability_scan": {
+        "type": "object",
+        "required": ["critical_vulnerabilities", "high_vulnerabilities", "medium_vulnerabilities", "low_vulnerabilities"],
+        "properties": {
+          "critical_vulnerabilities": {"type": "integer", "minimum": 0},
+          "high_vulnerabilities": {"type": "integer", "minimum": 0},
+          "medium_vulnerabilities": {"type": "integer", "minimum": 0},
+          "low_vulnerabilities": {"type": "integer", "minimum": 0},
+          "vulnerable_dependencies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name", "version", "vulnerability", "severity"],
+              "properties": {
+                "name": {"type": "string"},
+                "version": {"type": "string"},
+                "vulnerability": {"type": "string"},
+                "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+                "cve_id": {"type": "string"},
+                "fix_available": {"type": "boolean"},
+                "recommended_version": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "code_security": {
+        "type": "object",
+        "properties": {
+          "hardcoded_secrets": {"type": "integer", "minimum": 0},
+          "sql_injection_risks": {"type": "integer", "minimum": 0},
+          "xss_vulnerabilities": {"type": "integer", "minimum": 0},
+          "authentication_issues": {"type": "integer", "minimum": 0},
+          "security_patterns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["location", "issue_type", "severity"],
+              "properties": {
+                "location": {"type": "string"},
+                "issue_type": {"type": "string"},
+                "severity": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+                "description": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
+      "compliance_assessment": {
+        "type": "object",
+        "required": ["license_compliance", "security_policies"],
+        "properties": {
+          "license_compliance": {"type": "string", "enum": ["compliant", "partial", "non_compliant", "unknown"]},
+          "security_policies": {"type": "string", "enum": ["compliant", "partial", "non_compliant", "unknown"]},
+          "data_handling": {"type": "string", "enum": ["compliant", "partial", "non_compliant", "unknown"]},
+          "compliance_frameworks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["framework", "status"],
+              "properties": {
+                "framework": {"type": "string", "enum": ["SOX", "GDPR", "PCI_DSS", "HIPAA", "SOC2"]},
+                "status": {"type": "string", "enum": ["compliant", "partial", "non_compliant", "not_applicable"]},
+                "gaps": {"type": "array", "items": {"type": "string"}}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "git_analysis_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["repository_activity", "hotspot_analysis"],
+    "properties": {
+      "repository_activity": {
+        "type": "object",
+        "required": ["commit_frequency", "active_contributors", "bus_factor"],
+        "properties": {
+          "commit_frequency": {"type": "number", "minimum": 0},
+          "active_contributors": {"type": "integer", "minimum": 0},
+          "bus_factor": {"type": "number", "minimum": 0},
+          "knowledge_concentration": {"type": "number", "minimum": 0, "maximum": 1},
+          "average_commits_per_month": {"type": "number", "minimum": 0}
+        }
+      },
+      "hotspot_analysis": {
+        "type": "object",
+        "required": ["high_churn_files"],
+        "properties": {
+          "high_churn_files": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["file", "churn_score", "risk_level"],
+              "properties": {
+                "file": {"type": "string"},
+                "churn_score": {"type": "integer", "minimum": 0},
+                "complexity": {"type": "integer", "minimum": 0},
+                "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+                "unique_authors": {"type": "integer", "minimum": 0},
+                "last_modified": {"type": "string", "format": "date-time"}
+              }
+            }
+          }
+        }
+      },
+      "collaboration_patterns": {
+        "type": "object",
+        "properties": {
+          "cross_team_files": {"type": "integer", "minimum": 0},
+          "single_author_files": {"type": "integer", "minimum": 0},
+          "knowledge_silos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["component", "primary_author", "risk_level"],
+              "properties": {
+                "component": {"type": "string"},
+                "primary_author": {"type": "string"},
+                "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+                "backup_contributors": {"type": "integer", "minimum": 0}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "performance_analysis_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["performance_assessment"],
+    "properties": {
+      "performance_assessment": {
+        "type": "object",
+        "required": ["algorithmic_complexity_issues", "database_query_concerns", "scalability_readiness"],
+        "properties": {
+          "algorithmic_complexity_issues": {"type": "integer", "minimum": 0},
+          "database_query_concerns": {"type": "integer", "minimum": 0},
+          "memory_usage_patterns": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning", "critical"]},
+          "scalability_readiness": {"type": "integer", "minimum": 0, "maximum": 10},
+          "async_pattern_usage": {"type": "string", "enum": ["optimal", "good", "limited", "none"]}
+        }
+      },
+      "bottlenecks": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["location", "issue", "impact"],
+          "properties": {
+            "location": {"type": "string"},
+            "issue": {"type": "string"},
+            "impact": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+            "recommended_fix": {"type": "string"},
+            "estimated_effort": {"type": "string", "enum": ["small", "medium", "large", "xl"]}
+          }
+        }
+      },
+      "scalability_factors": {
+        "type": "object",
+        "properties": {
+          "database_design": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning"]},
+          "caching_strategy": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning", "none"]},
+          "resource_management": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning"]},
+          "horizontal_scaling_ready": {"type": "boolean"}
+        }
+      }
+    }
+  }
+}
