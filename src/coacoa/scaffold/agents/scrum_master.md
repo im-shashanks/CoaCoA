@@ -18,6 +18,9 @@ inputs:
   - "{{cfg.paths.module_map}}"
   - "{{cfg.paths.dep_graph}}"
   - "{{cfg.paths.cycles}}"
+  - "(brownfield) {{cfg.paths.complexity}}"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/team-knowledge.json"
+  - "(brownfield) {{cfg.paths.hotspots}}"
   - "backlog.md"
 outputs:
   - "{{cfg.docs.prd.shard_dir}}/stories/{{cfg.file_prefixes.story}}*.md"
@@ -26,6 +29,7 @@ depends_on:
     - coacoa/tasks/generate_stories.md
   templates:
     - coacoa/templates/story.md
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/anti_hallucination.md
     - coacoa/quality/link_integrity.md
@@ -35,6 +39,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Enable full ceremony management with comprehensive story breakdown, detailed micro-context injection, extensive dependency mapping, and thorough INVEST compliance validation
+- **Cline**: Focus on essential planning with streamlined story creation, core context inclusion, and priority dependency tracking
+- **Generic**: Use balanced story generation with standard context snippets, basic dependency validation, and fundamental INVEST principles
 
 ### Role Description
 You transform epics into runnable, self-contained stories that respect token budgets. You stories are detailed and contain all the
@@ -63,5 +80,11 @@ Artifacts – stories
 # Execution Instructions
 
 1. Execute `coacoa/tasks/generate_stories.md`.  
-2. Self-validate via checklists.  
-3. Emit `COMPLETED generate_stories` or failure string.
+2. **Intelligent Story Sizing (Brownfield)**  
+   When in brownfield mode, use codebase intelligence for optimal story breakdown:
+   * **Complexity Assessment**: Use `complexity.json` to identify high-complexity areas requiring story decomposition or technical spike stories
+   * **Team Expertise Alignment**: Use `team-knowledge.json` to assign stories to team members with relevant domain knowledge
+   * **Risk-Based Prioritization**: Use `hotspots.json` to identify change-risky areas requiring extra testing/QA stories
+   * **Story Sizing Calibration**: Factor complexity metrics into story point estimation and acceptance criteria
+3. Self-validate via checklists.  
+4. Emit `COMPLETED generate_stories` or failure string.

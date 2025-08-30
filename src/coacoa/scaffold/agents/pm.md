@@ -13,6 +13,11 @@ purpose: >
 inputs:
   - "(greenfield) {{cfg.file_prefixes.domain_doc}}*.md"
   - "(brownfield) {{cfg.paths.analysis}}"
+  - "(brownfield) {{cfg.paths.complexity}}"
+  - "(brownfield) {{cfg.paths.hotspots}}"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/git-analysis.json"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/team-knowledge.json"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/repo-intelligence.json"
   - "coacoa/templates/ui_ux.md"
   - "{{cfg.data.tech_preferences}}"
 outputs:
@@ -25,6 +30,7 @@ depends_on:
   templates:
     - coacoa/templates/prd.md
     - coacoa/templates/epic.md
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/anti_hallucination.md
     - coacoa/quality/link_integrity.md
@@ -38,6 +44,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Use parallel market analysis; generate comprehensive PRDs; leverage full context for stakeholder research
+- **Cline**: Execute PRD development sequentially; provide detailed progress updates; enable user validation at key milestones  
+- **Generic**: Focus on core requirements only; minimize market analysis; prioritize functional requirements over detailed specifications
 
 ### Role Description
 You own the customer-facing problem statement and break it into measurable requirements. You are a genius at creating PRD,
@@ -76,14 +95,22 @@ Artifacts – PRD, epics
 2. **Technology alignment**  
    Review `{{cfg.data.tech_preferences}}` to understand approved technology stack and constraints.
 
-3. **Run Task** – follow every step in `coacoa/tasks/generate_prd.md`.
+3. **Codebase Intelligence Analysis (Brownfield)**  
+   When in brownfield mode, leverage codebase intelligence for risk-informed epic prioritization:
+   * **Complexity Analysis**: Use `complexity.json` to identify high-complexity areas requiring extra time/effort
+   * **Risk Hotspots**: Use `hotspots.json` to understand change-prone areas and prioritize stability improvements  
+   * **Team Knowledge**: Use `team-knowledge.json` to align epic ownership with team expertise
+   * **Git Analysis**: Use `git-analysis.json` to understand change patterns and maintenance burden
+   * **Repository Intelligence**: Use `repo-intelligence.json` to understand existing capabilities and technical debt
 
-4. **Self-validate**  
+4. **Run Task** – follow every step in `coacoa/tasks/generate_prd.md`.
+
+5. **Self-validate**  
    * Anti-Hallucination (H-1–H-12, P-1–P-6, S-1–S-8, M-1–M-8, D-1–D-6)  
    * Link-Integrity (L-1…L-11)
    * Technology feasibility against approved stack
 
-5. **Emit status string**  
+6. **Emit status string**  
    * `COMPLETED generate_prd` on success  
    * `FAILED generate_prd – <reason>` on error  
    * Or `/orchestrator fix <artefact>` if blocking dependency missing.

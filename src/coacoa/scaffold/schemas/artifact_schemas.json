@@ -343,6 +343,50 @@
           }
         }
       },
+      "team_knowledge": {
+        "type": "object",
+        "properties": {
+          "code_ownership": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["file_pattern", "primary_expert", "risk_level"],
+              "properties": {
+                "file_pattern": {"type": "string"},
+                "primary_expert": {"type": "string"},
+                "secondary_experts": {"type": "array", "items": {"type": "string"}},
+                "risk_level": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+                "last_active": {"type": "string", "format": "date"}
+              }
+            }
+          },
+          "expertise_areas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["domain", "expert", "file_count", "confidence_score"],
+              "properties": {
+                "domain": {"type": "string"},
+                "expert": {"type": "string"},
+                "file_count": {"type": "integer", "minimum": 0},
+                "confidence_score": {"type": "number", "minimum": 0, "maximum": 1}
+              }
+            }
+          },
+          "knowledge_gaps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["component", "issue", "risk_mitigation"],
+              "properties": {
+                "component": {"type": "string"},
+                "issue": {"type": "string", "enum": ["single_maintainer", "no_documentation", "legacy_code", "high_complexity"]},
+                "risk_mitigation": {"type": "string"}
+              }
+            }
+          }
+        }
+      },
       "collaboration_patterns": {
         "type": "object",
         "properties": {
@@ -403,6 +447,65 @@
           "caching_strategy": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning", "none"]},
           "resource_management": {"type": "string", "enum": ["excellent", "good", "acceptable", "concerning"]},
           "horizontal_scaling_ready": {"type": "boolean"}
+        }
+      }
+    }
+  },
+
+  "context_relevance_schema": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["primary_files", "analysis_metadata"],
+    "properties": {
+      "primary_files": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["file", "relevance_score", "change_type"],
+          "properties": {
+            "file": {"type": "string"},
+            "relevance_score": {"type": "integer", "minimum": 1, "maximum": 10},
+            "change_type": {"type": "string", "enum": ["create", "modify", "reference"]},
+            "last_modified": {"type": "string", "format": "date-time"},
+            "recent_change_boost": {"type": "boolean"}
+          }
+        }
+      },
+      "secondary_files": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["file", "relevance_score", "change_type"],
+          "properties": {
+            "file": {"type": "string"},
+            "relevance_score": {"type": "integer", "minimum": 1, "maximum": 10},
+            "change_type": {"type": "string", "enum": ["create", "modify", "reference"]},
+            "dependency_type": {"type": "string", "enum": ["called_by", "imports", "extends", "implements"]}
+          }
+        }
+      },
+      "tertiary_files": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": ["file", "relevance_score", "change_type"],
+          "properties": {
+            "file": {"type": "string"},
+            "relevance_score": {"type": "integer", "minimum": 1, "maximum": 10},
+            "change_type": {"type": "string", "enum": ["create", "modify", "reference"]},
+            "similarity_reason": {"type": "string"}
+          }
+        }
+      },
+      "analysis_metadata": {
+        "type": "object",
+        "required": ["total_files_analyzed", "included_files", "excluded_files"],
+        "properties": {
+          "total_files_analyzed": {"type": "integer", "minimum": 0},
+          "included_files": {"type": "integer", "minimum": 0},
+          "excluded_files": {"type": "integer", "minimum": 0},
+          "token_budget_used": {"type": "number", "minimum": 0, "maximum": 1},
+          "filtering_threshold": {"type": "integer", "minimum": 1, "maximum": 10}
         }
       }
     }

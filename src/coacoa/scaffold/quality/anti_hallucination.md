@@ -71,3 +71,13 @@
 | **D-4** | **Data migration safety** — Database migrations are reversible and tested on production-like data. | |
 | **D-5** | **PII handling** — Personally identifiable information follows data protection regulations (GDPR, CCPA). | |
 | **D-6** | **Data retention** — Data retention policies are implemented; old data is archived or deleted appropriately. | |
+
+## Context Quality Gates
+
+| # | Checkpoint | Pass/Fail |
+|---|------------|-----------|
+| **CQ-1** | **Context relevance scoring** — All included context has relevance score ≥5 for current task. | |
+| **CQ-2** | **Change-based scoping** — Analysis scope matches actual change magnitude in repository. | |
+| **CQ-3** | **Token budget compliance** — Context selection fits within model's token allocation limits. | |
+| **CQ-4** | **Team knowledge integration** — Code ownership and expertise data included for critical components. | |
+| **CQ-5** | **Model-specific optimization** — Prompt format and depth appropriate for detected AI environment. | |

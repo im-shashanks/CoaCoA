@@ -21,7 +21,7 @@
 </p>
 
 <h1 align="center">CoaCoA</h1>
-<p align="center"><strong>Context-Optimised Agentic Coding Assistant</strong></p>
+<p align="center"><strong>Context-aware Coding Assistant</strong></p>
 <p align="center">
   <em>An enterprise-grade AI-powered development framework that transforms how teams build, test, and ship software</em>
 </p>

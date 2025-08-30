@@ -1,6 +1,7 @@
 stages:
   - prep-codebase-analysis
-  - code-explorer          # produce CIS
+  - code-explorer          # produce CIS + artifact validation
+  - schema-validation       # validate all artifacts against schemas
   - pm                     # PRD refresh
   - ux_designer            # UX design
   - po
@@ -9,3 +10,4 @@ stages:
   - scrum-master
   - dev
   - qa
+  - final-validation       # validate all final outputs

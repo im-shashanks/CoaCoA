@@ -5,6 +5,20 @@
 > **Objective**  
 > Create a comprehensive, self-contained analysis plan following enterprise-grade methodology. This plan will serve as the single source of truth for systematic codebase analysis, with each phase containing complete instructions for independent execution.
 
+### Schema Validation Requirements
+**CRITICAL**: All artifacts generated during analysis MUST validate against schemas defined in:
+- `coacoa/schemas/artifact_schemas.json`
+
+**Artifact-Schema Mappings**:
+- `architecture.json` → `architecture_analysis_schema`
+- `dependencies.json` → `dependency_analysis_schema`  
+- `complexity.json` → `complexity_analysis_schema`
+- `git-analysis.json` → `git_analysis_schema`
+- `build-info.json` → `build_analysis_schema`
+- `team-knowledge.json` → `team_knowledge_schema`
+
+**Validation Protocol**: Before finalizing any artifact, verify it matches the required schema structure. If validation fails, revise the artifact to comply with schema requirements.
+
 ---
 
 ## Planning Phase: Generate Detailed Analysis Plan
@@ -418,7 +432,29 @@ git log --pretty=format:"%an %ad %s" --date=short --since="1 year ago"
 git log --grep="fix\|bug\|patch" --pretty=format:"%h %ad %s" --date=short
 ```
 
-#### 6.2 Knowledge Risk Assessment  
+#### 6.2 Team Knowledge Mapping (Enhanced)
+**Code Ownership Analysis**:
+```bash
+# Generate ownership data
+git log --pretty=format:"%an %ae" --since="1 year ago" | sort | uniq -c | sort -nr > /tmp/contributors
+
+# File ownership mapping  
+for file in $(find . -name "*.py" -o -name "*.js" -o -name "*.java" -o -name "*.go"); do
+  PRIMARY_AUTHOR=$(git log --follow --pretty=format:"%an" "$file" | head -20 | sort | uniq -c | sort -nr | head -1 | awk '{print $2}')
+  COMMIT_COUNT=$(git log --follow --oneline "$file" | wc -l)
+  LAST_MODIFIED=$(git log -1 --pretty=format:"%ad" --date=short "$file")
+  
+  echo "$file,$PRIMARY_AUTHOR,$COMMIT_COUNT,$LAST_MODIFIED" >> /tmp/ownership_map
+done
+```
+
+**Team Expertise Identification**:
+- **Domain Experts**: Authors with >50% commits in specific directories
+- **Cross-Team Contributors**: Authors working across multiple components  
+- **Recent Contributors**: Active in last 90 days
+- **Legacy Maintainers**: Long-term stewards of specific components
+
+#### 6.3 Knowledge Risk Assessment (Enhanced)
 **Bus Factor Analysis**:
 - **Single Points of Failure**: Files with only one active contributor
 - **Knowledge Distribution**: How many people understand each component
@@ -430,7 +466,7 @@ git log --grep="fix\|bug\|patch" --pretty=format:"%h %ad %s" --date=short
 - **Code Review Patterns**: Review engagement and quality
 - **Mentorship Evidence**: Junior/senior developer collaboration
 
-#### 6.3 Hotspot Identification
+#### 6.4 Hotspot Identification
 **Risk Scoring Algorithm**:
 ```
 Hotspot Score = (Commit Frequency × Complexity × Business Criticality) / Knowledge Distribution
@@ -447,6 +483,56 @@ Where:
 - **Business-Critical**: Payment processing, authentication, core algorithms
 - **Dependency Hubs**: Files that many other files depend on
 - **Legacy Components**: Old code with minimal recent maintenance
+
+#### Enhanced Output Schema
+```json
+{
+  "repository_activity": {
+    "commit_frequency": 45.2,
+    "active_contributors": 8,
+    "bus_factor": 3.2,
+    "knowledge_concentration": 0.67
+  },
+  "team_knowledge": {
+    "code_ownership": [
+      {
+        "file_pattern": "src/payment/*",
+        "primary_expert": "alice@company.com",
+        "secondary_experts": ["bob@company.com"],
+        "risk_level": "medium",
+        "last_active": "2024-01-15"
+      }
+    ],
+    "expertise_areas": [
+      {
+        "domain": "authentication", 
+        "expert": "charlie@company.com",
+        "file_count": 23,
+        "confidence_score": 0.89
+      }
+    ],
+    "knowledge_gaps": [
+      {
+        "component": "legacy/billing",
+        "issue": "single_maintainer",
+        "risk_mitigation": "documentation_needed"
+      }
+    ]
+  },
+  "hotspot_analysis": {
+    "high_churn_files": [
+      {
+        "file": "src/services/payment.py",
+        "churn_score": 87,
+        "complexity": 22,
+        "risk_level": "high",
+        "unique_authors": 3,
+        "last_modified": "2024-01-20T10:30:00Z"
+      }
+    ]
+  }
+}
+```
 
 ---
 

@@ -19,6 +19,10 @@ inputs:
   - "{{cfg.paths.module_map}} (brownfield)"
   - "{{cfg.paths.cycles}}"
   - "{{cfg.paths.dep_graph}}"
+  - "(brownfield) {{cfg.paths.complexity}}"
+  - "(brownfield) {{cfg.paths.hotspots}}"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/performance-analysis.json"
+  - "(brownfield) {{cfg.paths.analysis_artifacts}}/security-analysis.json"
   - "{{cfg.data.tech_preferences}}"
   - "{{cfg.data.pattern_library}}"
   - "{{cfg.data.solid_policy}}"
@@ -34,6 +38,7 @@ depends_on:
   templates:
     - coacoa/templates/architecture.md
     - coacoa/templates/adr.md
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/anti_hallucination.md
     - coacoa/quality/link_integrity.md
@@ -51,6 +56,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Use parallel architecture analysis; generate comprehensive ADRs; leverage full context for complex system design
+- **Cline**: Execute architecture design sequentially; provide detailed rationale for each decision; enable user approval at major decision points  
+- **Generic**: Focus on critical architecture decisions only; minimize ADR details; prioritize system boundaries over detailed component design
 
 ### Role Description
 You design a scalable, evolvable architecture, record key decisions, and eliminate cycles.
@@ -90,15 +108,23 @@ You design a scalable, evolvable architecture, record key decisions, and elimina
    - Apply `{{cfg.data.solid_policy}}` principles for component design
    - Reference `{{cfg.data.language_rules}}` for language-specific architectural considerations
 
-2. **Execute architecture design**: Follow `coacoa/tasks/generate_architecture.md`
+2. **Risk-Aware Architecture Analysis (Brownfield)**  
+   When in brownfield mode, leverage codebase intelligence to inform architectural decisions:
+   * **Complexity Hotspots**: Use `complexity.json` to identify high-complexity areas that need architectural refactoring or isolation
+   * **Change Risk Areas**: Use `hotspots.json` to understand frequently changing components and design for stability
+   * **Performance Bottlenecks**: Use `performance-analysis.json` to identify performance issues requiring architectural solutions
+   * **Security Vulnerabilities**: Use `security-analysis.json` to prioritize security-focused architectural patterns
+   * **Dependency Risks**: Analyze existing cycles and dependencies to prevent architectural debt accumulation
 
-3. **Validate architecture decisions**:
+3. **Execute architecture design**: Follow `coacoa/tasks/generate_architecture.md`
+
+4. **Validate architecture decisions**:
    - Apply `{{cfg.quality.security_gate}}` for security architecture (IS-1 through DFS-5)
    - Apply `{{cfg.quality.performance_gate}}` for scalability architecture (SC-1 through MO-5)
    - Run `{{cfg.quality.architecture_integrity}}` checklist (A-1 through A-7)
    - Run anti-hallucination checks (H-1 through D-6)
 
-4. **Return status**:
+5. **Return status**:
    * `COMPLETED generate_architecture` **or**
    * `FAILED generate_architecture – <reason>` **or**
    * `/orchestrator fix <artefact>` if dependency missing

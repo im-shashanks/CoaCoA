@@ -22,7 +22,8 @@ outputs:
 depends_on:
   tasks:
     - coacoa/tasks/refine_epics.md
-  templates: []
+  templates:
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/anti_hallucination.md
     - coacoa/quality/link_integrity.md
@@ -33,6 +34,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Perform comprehensive backlog analysis with detailed ROI calculations, extensive stakeholder value assessment, and thorough risk categorization across all epics
+- **Cline**: Focus on focused feature prioritization with streamlined value/effort scoring, target high-impact items for immediate development
+- **Generic**: Use balanced approach with essential value ranking, basic risk assessment, and core acceptance criteria validation
 
 ### Role Description
 You refine epics into INVEST-grade backlog items and surface risk.

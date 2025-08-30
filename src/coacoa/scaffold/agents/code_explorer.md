@@ -70,12 +70,13 @@ Before any analysis, CONFIRM these files exist and are readable:
 6. DO NOT do generic "analyze codebase structure" - follow the structured 7-phase methodology only
 
 ### Behavioural Commandments
-1. Never write outside `{{cfg.paths.analysis | dirname}}`.  
+1. Never write outside the analysis directory structure.  
 2. Skip refresh if SHA unchanged.  
 3. Validate every JSON schema before returning COMPLETED.  
 4. Ask for language-specific plug-in guidance if AST parse fails.
 5. **Language consistency**: Apply `{{cfg.data.language_rules}}` when analyzing code patterns and identifying best practices violations.
-6. **Coding standards analysis**: Flag code that doesn't follow language-specific conventions defined in language rules.  
+6. **Coding standards analysis**: Flag code that doesn't follow language-specific conventions defined in language rules.
+7. **Incremental efficiency**: When fewer than 20 files changed and no critical dependencies modified, execute selective analysis focusing only on impacted components.  
 
 ### Core Responsibilities
 1. Generate CIS artefacts
@@ -112,13 +113,54 @@ Artifacts – intelligence JSONs
 
 ## Standard Execution Flow
 
-1. **Freshness check**  
+1. **Enhanced Freshness check**  
 
 * Load `git rev-parse HEAD` as `latest_sha`.  
 * If `{{cfg.paths.analysis}}` exists **and** its front-matter `sha:` equals `latest_sha`,  
   respond with:  
   > `CIS UP-TO-DATE`  
   and exit.
+
+### Incremental Analysis Protocol
+**Execute change-based selective analysis when incremental_analysis is enabled:**
+
+#### Change Detection Instructions
+```bash
+# Get changed files since last analysis
+git diff HEAD $(cat coacoa/context/.last_analysis_sha 2>/dev/null || echo "HEAD~10") --name-only > /tmp/changed_files
+
+# Classify changes by impact level
+CRITICAL_CHANGES=$(grep -E "(package\.json|requirements\.txt|pom\.xml|go\.mod)" /tmp/changed_files || true)
+CODE_CHANGES=$(grep -E "\.(py|js|ts|java|go|rs)$" /tmp/changed_files || true) 
+CONFIG_CHANGES=$(grep -E "\.(yaml|yml|json|toml)$" /tmp/changed_files || true)
+```
+
+#### Selective Phase Execution Instructions
+
+**IF** `$CRITICAL_CHANGES` is non-empty:
+- Execute **ALL 8 phases** - dependency changes require full analysis
+
+**ELIF** `$CODE_CHANGES` has >20 files:
+- Execute phases: 1 (Repository), 3 (Architecture), 4 (Quality), 8 (Consolidation)
+
+**ELIF** `$CODE_CHANGES` has 1-20 files:
+- Execute phases: 1 (Repository), 4 (Quality), 6 (Git Analysis), 8 (Consolidation)
+- **Enhanced Phase 4**: Focus only on changed files for complexity analysis
+
+**ELSE** (only config/doc changes):
+- Execute phases: 1 (Repository), 8 (Consolidation) 
+- Skip expensive analysis phases
+
+#### Context Delta Tracking
+Add to each phase output:
+```yaml
+analysis_metadata:
+  incremental_analysis: true
+  changed_files_count: {{file_count}}
+  analysis_scope: "selective|full" 
+  previous_sha: {{previous_sha}}
+  scope_justification: "{{reason_for_scope}}"
+```
 
 2. **Load language standards**  
 

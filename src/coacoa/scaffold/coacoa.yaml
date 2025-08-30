@@ -10,16 +10,16 @@ coa:
     analysis_reports:       coacoa/context/analysis/reports/    # Individual task reports
     analysis_consolidated:  coacoa/context/analysis/consolidated/ # Final consolidated outputs
     
-    # Legacy Paths (for backward compatibility)
+    # Legacy Paths (for backward compatibility) - aligned with actual structure
     analysis:        coacoa/context/analysis.md
-    module_map:      coacoa/context/analysis/artifacts/architecture.json
-    dep_graph:       coacoa/context/analysis/artifacts/architecture.json
-    dependencies:    coacoa/context/analysis/artifacts/dependencies.json
-    cycles:          coacoa/context/analysis/artifacts/architecture.json
-    complexity:      coacoa/context/analysis/artifacts/complexity.json
-    hotspots:        coacoa/context/analysis/artifacts/git-analysis.json
-    coverage:        coacoa/context/analysis/artifacts/complexity.json
-    build_info:      coacoa/context/analysis/artifacts/build-info.json
+    module_map:      coacoa/context/intelligence/module_map.json
+    dep_graph:       coacoa/context/intelligence/dep_graph.json
+    dependencies:    coacoa/context/intelligence/dep_graph.json
+    cycles:          coacoa/context/intelligence/dep_graph.json
+    complexity:      coacoa/context/intelligence/complexity.json
+    hotspots:        coacoa/context/intelligence/hotspots.json
+    coverage:        coacoa/context/intelligence/coverage.json
+    build_info:      coacoa/context/intelligence/build_info.json
     
     # Standard Paths
     docs_dir:        coacoa/docs/
@@ -37,6 +37,13 @@ coa:
     codebase_analysis_master: coacoa/templates/codebase_analysis_master.md # Master analysis template
     analysis_plan_template:   coacoa/templates/analysis_plan_template.md   # Plan generation template
     progress_tracker:         coacoa/templates/progress_tracker.md         # Progress tracking utilities
+    model_adaptation:         coacoa/templates/model_adaptation.md         # AI model adaptation protocol
+    error_handling:           coacoa/templates/error_handling.md           # Error handling patterns
+    prd:                      coacoa/templates/prd.md                      # Product requirements template
+    epic:                     coacoa/templates/epic.md                     # Epic template
+    story:                    coacoa/templates/story.md                    # Story template
+    architecture:             coacoa/templates/architecture.md             # Architecture template
+    adr:                      coacoa/templates/adr.md                      # ADR template
     
   # ---------- SCHEMAS ----------
   schemas:
@@ -64,19 +71,20 @@ coa:
 
   # ---------- WORKFLOWS ----------
   workflows:
-    greenfield:      coacoa/workflows/default_greenfield.yml
-    brownfield:      coacoa/workflows/default_brownfield.yml
+    greenfield:      coacoa/workflows/default_greenfield.yaml
+    brownfield:      coacoa/workflows/default_brownfield.yaml
 
   # ---------- QUALITY CHECKS ----------
   quality:
-    anti_hallucination:   coacoa/quality/anti_hallucination.md
-    link_integrity:       coacoa/quality/link_integrity.md
-    qa:                   coacoa/quality/qa.md
-    arch_integrity:       coacoa/quality/architecture_integrity.md
-    build_integrity:      coacoa/quality/build_integrity.md
-    code_quality_gate:    coacoa/quality/code_quality_gate.md
-    security_gate:        coacoa/quality/security_gate.md
-    performance_gate:     coacoa/quality/performance_gate.md
+    anti_hallucination:       coacoa/quality/anti_hallucination.md
+    link_integrity:           coacoa/quality/link_integrity.md
+    qa:                       coacoa/quality/qa.md
+    arch_integrity:           coacoa/quality/architecture_integrity.md
+    build_integrity:          coacoa/quality/build_integrity.md
+    code_quality_gate:        coacoa/quality/code_quality_gate.md
+    security_gate:            coacoa/quality/security_gate.md
+    performance_gate:         coacoa/quality/performance_gate.md
+    unified_analysis_validation: coacoa/quality/unified_analysis_validation.md
 
   # ---------- LIMITS ----------
   limits:
@@ -113,6 +121,12 @@ coa:
     detailed_reports:     true       # Generate detailed phase reports
     risk_prioritization:  true       # Prioritize findings by risk level
     recommendations:      true       # Generate actionable recommendations
+    
+    # Incremental Analysis Configuration (NEW)
+    incremental_analysis: true       # Enable change-based selective analysis
+    change_threshold_full: 20        # Files changed requiring full analysis
+    change_threshold_selective: 5    # Files changed for selective analysis
+    git_history_months: 12          # Months of git history for team analysis
 
   # ---------- BRANCHING ----------
   branching:
@@ -123,6 +137,45 @@ coa:
   orchestrator:
     parallel_stories:     3
     retry_failed_tasks:   true
+
+  # ---------- CONTEXT OPTIMIZATION (NEW) ----------
+  context:
+    relevance_threshold: 5            # Minimum relevance score for inclusion
+    incremental_analysis: true        # Enable change-based selective analysis  
+    team_knowledge_integration: true  # Include team expertise in analysis
+    token_budget_management: true     # Enable token allocation optimization
+    recent_change_boost: true         # Boost relevance for recently changed files
+    
+  # ---------- AI MODEL ADAPTATION (NEW) ----------
+  ai_adaptation:
+    auto_detect_environment: true       # Automatically detect Claude Code vs Cline
+    token_allocation_strategy: "adaptive" # adaptive|conservative|aggressive
+    model_specific_formatting: true     # Use model-optimized prompt formats
+    fallback_mode: "generic"           # Fallback when detection fails
+    
+    # Token limits by environment
+    token_limits:
+      claude_code: 200000
+      cline: 128000
+      generic: 8000
+      
+    # Token allocation percentages by environment
+    token_allocation:
+      claude_code:
+        codebase_context: 0.40        # 40%
+        analysis_instructions: 0.20   # 20%
+        generated_content: 0.30       # 30%
+        safety_buffer: 0.10           # 10%
+      cline:
+        codebase_context: 0.39        # 39%
+        analysis_instructions: 0.20   # 20%
+        generated_content: 0.30       # 30%
+        safety_buffer: 0.11           # 11%
+      generic:
+        codebase_context: 0.37        # 37%
+        analysis_instructions: 0.19   # 19%
+        generated_content: 0.31       # 31%
+        safety_buffer: 0.13           # 13%
 
   # ---------- LLM DEFAULTS ----------
   llm:
