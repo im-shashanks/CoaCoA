@@ -67,8 +67,18 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "coacoa.scaffold" = [
-  "coacoa/**",
-  "ide_helpers/**",       # ← this is the important one
-  "ide_helpers/.clinerules/**",
-  "ide_helpers/.claude/**"
+  "*.yaml",
+  "*.yml",
+  "agents/**/*",
+  "context/**/*", 
+  "data/**/*",
+  "examples/**/*",
+  "ide_helpers/**/*",
+  "ide_helpers/.clinerules/**/*",
+  "ide_helpers/.claude/**/*",
+  "quality/**/*",
+  "schemas/**/*",
+  "tasks/**/*", 
+  "templates/**/*",
+  "workflows/**/*"
 ]

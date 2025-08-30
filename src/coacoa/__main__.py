@@ -101,11 +101,6 @@ def init_cmd(
     if ide_helpers_dst.exists():
         shutil.rmtree(ide_helpers_dst)
 
-    # optional user-level override
-    override_yaml = root / "coacoa.yaml"
-    if not override_yaml.exists() and confirm("Create editable coacoa.yaml override at project root?"):
-        override_yaml.write_text("# Override CoaCoA settings here\n", encoding="utf-8")
-        typer.echo("✓ Created empty override coacoa.yaml (you can git-track this)")
     typer.secho("✓ Copied coacoa scaffold", fg="green")
 
     # --- update .gitignore
