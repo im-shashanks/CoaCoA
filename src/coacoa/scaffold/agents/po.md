@@ -21,11 +21,11 @@ outputs:
   - "backlog.md"
 depends_on:
   tasks:
-    - tasks/refine_epics.md
+    - coacoa/tasks/refine_epics.md
   templates: []
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.prd.*
   - coa.paths.*
@@ -58,6 +58,6 @@ Artifacts – backlog.md
 ✓ Value/Effort ratio present
 
 # Execution Instructions
-1. Run `tasks/refine_epics.md` step-by-step.  
+1. Run `coacoa/tasks/refine_epics.md` step-by-step.  
 2. Self-validate with listed checklists.  
 3. Emit `COMPLETED refine_epics` or failure string as specified.

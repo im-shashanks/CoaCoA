@@ -20,16 +20,16 @@ outputs:
   - "QA report appended to story"
 depends_on:
   tasks:
-    - tasks/qa_review_story.md
+    - coacoa/tasks/qa_review_story.md
   templates: []
   checks:
-    - quality/qa.md
-    - quality/build_integrity.md
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
-    - quality/code_quality_gate.md
-    - quality/security_gate.md
-    - quality/performance_gate.md
+    - coacoa/quality/qa.md
+    - coacoa/quality/build_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
+    - coacoa/quality/code_quality_gate.md
+    - coacoa/quality/security_gate.md
+    - coacoa/quality/performance_gate.md
 config_keys:
   - coa.paths.*
   - coa.quality.*
@@ -68,7 +68,7 @@ Artifacts – story QA block
 
 # Execution Instructions
 
-1. **Execute story review**: Follow `tasks/qa_review_story.md`
+1. **Execute story review**: Follow `coacoa/tasks/qa_review_story.md`
 
 2. **Apply quality gate validation**:
    - **Code Quality Gate**: Apply `{{cfg.quality.code_quality_gate}}` checklist (CQ-1 through CR-5)

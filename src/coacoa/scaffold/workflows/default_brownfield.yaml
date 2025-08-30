@@ -5,7 +5,7 @@ stages:
   - ux_designer(optional)
   - po
   - architect
-  - arch-integrity         # run quality/architecture_integrity.md
+  - arch-integrity         # run coacoa/quality/architecture_integrity.md
   - arch-integrity
   - scrum-master
   - dev

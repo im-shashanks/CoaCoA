@@ -21,8 +21,8 @@ depends_on:
   tasks: []
   templates: []
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.paths.docs_dir
   - coa.file_prefixes.domain_doc

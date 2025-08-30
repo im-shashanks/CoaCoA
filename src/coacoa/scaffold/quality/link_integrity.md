@@ -13,7 +13,7 @@
 | **L-4a** | New intelligence artefacts | (`dependencies.json`, `cycles.json`) exist and parse. |
 | **L-5** | **Diagram sources** | Mermaid or SVG diagrams declaring a file/module reference point to real files. |
 | **L-6** | **External URLs** | HTTP/HTTPS links return 200-level status (skip for intranet). |
-| **L-7** | **Workflow YAML** | Stages in `workflows/*.yml` correspond to actual agent IDs. |
+| **L-7** | **Workflow YAML** | Stages in `coacoa/workflows/*.yml` correspond to actual agent IDs. |
 | **L-8** | **Config keys** | Every `{{cfg.…}}` token used in any template resolves in `coacoa.yaml`. |
 | **L-9** | **Removed artefacts** | Deleted files are not referenced anywhere in current docs/stories after merge. |
 | **L-10**| **SemVer tags** | Version strings in README / setup / docs stay in sync (e.g. `__version__`, `pyproject.toml`). |

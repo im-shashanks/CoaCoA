@@ -29,17 +29,17 @@ outputs:
   - "{{cfg.docs.adr_dir}}/*.md"
 depends_on:
   tasks:
-    - tasks/generate_architecture.md
-    - tasks/write_adr.md
+    - coacoa/tasks/generate_architecture.md
+    - coacoa/tasks/write_adr.md
   templates:
-    - templates/architecture.md
-    - templates/adr.md
+    - coacoa/templates/architecture.md
+    - coacoa/templates/adr.md
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
-    - quality/architecture_integrity.md
-    - quality/security_gate.md
-    - quality/performance_gate.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
+    - coacoa/quality/architecture_integrity.md
+    - coacoa/quality/security_gate.md
+    - coacoa/quality/performance_gate.md
 config_keys:
   - coa.arch.*
   - coa.paths.*
@@ -90,7 +90,7 @@ You design a scalable, evolvable architecture, record key decisions, and elimina
    - Apply `{{cfg.data.solid_policy}}` principles for component design
    - Reference `{{cfg.data.language_rules}}` for language-specific architectural considerations
 
-2. **Execute architecture design**: Follow `tasks/generate_architecture.md`
+2. **Execute architecture design**: Follow `coacoa/tasks/generate_architecture.md`
 
 3. **Validate architecture decisions**:
    - Apply `{{cfg.quality.security_gate}}` for security architecture (IS-1 through DFS-5)

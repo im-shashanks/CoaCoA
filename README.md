@@ -217,22 +217,174 @@ quality:
 
 ## Command Reference
 
-### IDE Integration
+### Prerequisites
 
-CoaCoA integrates seamlessly with AI-powered IDEs through slash commands:
+Before using commands, ensure CoaCoA is properly initialized in your project:
 
-| Command | Purpose | Use Case |
-|---------|---------|----------|
-| `/codebase-detection` | **Unified enterprise codebase analysis** | **Single command for comprehensive analysis (works with both Claude Code & Cline)** |
-| `/analyst init "<idea>"` | Start requirement gathering | New project initialization |
-| `/pm new-prd` | Generate product requirements | Define project scope |
-| `/ux-designer make-ui` | Create UX specifications | Design user interfaces |
-| `/po refine-epics` | Prioritize features | Backlog management |
-| `/architect finalize-arch` | Design system architecture | Technical planning |
-| `/scrum-master create` | Break down work items | Sprint planning |
-| `/dev implement <story>` | Code implementation | Feature development |
-| `/qa review` | Quality validation | Testing and verification |
-| `/orchestrator run` | Automated workflow execution | End-to-end development |
+```bash
+# Initialize for your IDE
+coacoa init --claude-code    # For Claude Code users
+coacoa init --cline         # For Cline users
+
+# Commit the framework setup
+git add . && git commit -m "Add CoaCoA framework"
+```
+
+### Understanding Command Structure
+
+All CoaCoA commands follow a strict instruction format designed to ensure AI agents follow exact specifications without deviation. Each command:
+
+- **Enforces strict adherence** to agent instructions with ALL CAPS warnings
+- **References exact agent specification files** with explicit paths
+- **Prevents AI deviation** through emphatic instruction formatting
+- **Works identically** across Claude Code and Cline IDEs
+
+#### Recent Enhancement: Command Instruction Enforcement
+
+**New in v2.0**: All command files now include emphatic instruction formatting to ensure Claude Code follows rules exactly:
+
+```markdown
+# THIS COMMAND IS FOR [SPECIFIC PURPOSE]. YOU MUST FOLLOW INSTRUCTIONS EXACTLY AS GIVEN. DO NOT DEVIATE FROM THE PROCESS.
+
+## INSTRUCTION
+As a [agent-name] agent you **MUST** follow the instructions **EXACTLY** as in **Path:** `coacoa/agents/[agent_file].md`
+```
+
+This format ensures:
+- **No deviation** from specified agent behavior
+- **Exact path references** to agent specification files
+- **Consistent execution** across different AI environments
+- **Predictable results** regardless of IDE or AI model variations
+
+### IDE Integration Commands
+
+CoaCoA provides specialized slash commands for seamless AI-powered development:
+
+| Command | Agent | Purpose | Best Use Case | Parameters |
+|---------|--------|---------|---------------|------------|
+| `/codebase-detection` | **Code Explorer** | **Enterprise codebase analysis** | **Brownfield projects - comprehensive analysis** | None - automatically detects IDE mode |
+| `/analyst init "<idea>"` | **Analyst** | Requirements gathering from idea | **Greenfield - start new projects** | `<idea>` - one-line vision statement |
+| `/analyst` | **Analyst** | Domain analysis for existing code | **Brownfield - understand domain** | None |
+| `/pm new-prd` | **Product Manager** | Generate product requirements | **After analyst phase - define scope** | None |
+| `/ux-designer make-ui` | **UX Designer** | Create interface specifications | **UI/UX planning phase** | None |
+| `/po refine-epics` | **Product Owner** | Prioritize and refine features | **Backlog management** | None |
+| `/architect finalize-arch` | **Architect** | System architecture design | **Technical planning phase** | None |
+| `/scrum-master create` | **Scrum Master** | Break epics into stories | **Sprint planning** | None |
+| `/dev implement <story>` | **Developer** | Code implementation | **Development phase** | `<story>` - story ID like `s_001_01` |
+| `/qa review` | **QA Engineer** | Quality validation | **Testing phase** | None |
+| `/orchestrator run` | **Orchestrator** | Automated end-to-end workflow | **Full pipeline execution** | None |
+| `/orchestrator log` | **Orchestrator** | View workflow progress | **Monitor execution status** | None |
+| `/orchestrator fix` | **Orchestrator** | Repair workflow issues | **Fix broken workflows** | None |
+
+### Command Execution Modes
+
+#### Claude Code Mode (Parallel Processing)
+- **Automatic Detection**: Commands detect Claude Code environment
+- **Parallel Execution**: Multiple analysis phases run simultaneously
+- **Faster Performance**: Optimized for Claude Code's parallel processing capabilities
+- **Auto-Orchestration**: Automatic coordination between agents
+
+#### Cline Mode (Sequential User-Controlled)
+- **Sequential Steps**: User controls progression through each phase
+- **Manual Control**: User approves each step before proceeding
+- **Resume Capability**: Can pause and resume analysis at any phase
+- **User Oversight**: Maximum human control over the process
+
+### Workflow Patterns
+
+#### 🌱 Greenfield Development (New Projects)
+
+**Complete new project workflow:**
+```text
+1. /analyst init "Real-time expense tracker for remote teams"
+2. /pm new-prd
+3. /ux-designer make-ui  
+4. /po refine-epics
+5. /architect finalize-arch
+6. /scrum-master create
+7. /orchestrator run
+```
+
+**What each step does:**
+- **Analyst**: Captures problem domain, user personas, and business requirements
+- **PM**: Creates comprehensive Product Requirements Document (PRD)
+- **UX Designer**: Designs user interface and accessibility specifications
+- **Product Owner**: Prioritizes features and manages epic dependencies
+- **Architect**: Creates technical architecture with decision records
+- **Scrum Master**: Breaks epics into implementable user stories
+- **Orchestrator**: Manages development workflow with quality gates
+
+#### 🏗️ Brownfield Enhancement (Existing Projects)
+
+**Enhanced analysis workflow:**
+```text
+1. /codebase-detection     # Single comprehensive analysis command
+2. /analyst                # Understand domain from existing code
+3. /pm new-prd            # Generate PRD based on analysis findings  
+4. /architect finalize-arch # Architecture aligned with existing codebase
+5. /orchestrator run      # Execute implementation workflow
+```
+
+**What the unified analysis provides:**
+- **Repository Intelligence**: Complete codebase structure and patterns
+- **Architecture Assessment**: Dependency mapping and design patterns
+- **Quality Analysis**: Technical debt and maintainability metrics
+- **Security & Compliance**: Vulnerability scanning and license validation
+- **Performance Assessment**: Algorithmic complexity and scalability analysis
+- **Team Collaboration**: Git history analysis and knowledge risk assessment
+- **Executive Summary**: Risk-prioritized findings with actionable recommendations
+
+### Advanced Usage Patterns
+
+#### Story-Specific Development
+```text
+# Implement specific user story
+/dev implement s_001_02
+
+# Review specific implementation
+/qa review s_001_02
+```
+
+#### Workflow Monitoring
+```text
+# Check orchestrator progress
+/orchestrator log
+
+# Fix issues in workflow
+/orchestrator fix
+
+# Run full pipeline
+/orchestrator run
+```
+
+#### Analysis Refresh
+```text
+# Re-analyze codebase after major changes
+/codebase-detection
+
+# Update architecture after refactoring
+/architect finalize-arch
+```
+
+### Error Handling & Recovery
+
+**Common Issues and Solutions:**
+
+1. **"Framework files not detected"**
+   - **Solution**: Run `coacoa init --claude-code` or `coacoa init --cline`
+   - **Cause**: CoaCoA not properly initialized
+
+2. **"Dependencies not resolved"**
+   - **Solution**: Check `orchestrator_log.md` for dependency chain
+   - **Cause**: Story dependencies not completed in order
+
+3. **"Quality gates failed"**
+   - **Solution**: Run `/orchestrator fix` to identify and resolve issues
+   - **Cause**: Code doesn't meet quality standards (tests, lint, coverage)
+
+4. **"SHA unchanged - skipping analysis"**
+   - **Solution**: This is normal - analysis is cached until code changes
+   - **Cause**: Codebase hasn't changed since last analysis
 
 ### CLI Commands
 
@@ -242,11 +394,34 @@ coacoa --help
 coacoa init --help
 
 # Initialize with IDE support
-coacoa init --claude-code    # For Claude Code
-coacoa init --cline         # For Cline
+coacoa init --claude-code    # For Claude Code users
+coacoa init --cline         # For Cline users  
 
-# Check version
+# Check version and status
 coacoa version
+```
+
+### Configuration Customization
+
+Commands respect your project configuration in `coacoa.yaml`:
+
+```yaml
+# Customize analysis behavior
+analysis:
+  enterprise_mode: true              # Enable enterprise features
+  auto_mode_detection: true          # Auto-detect Claude Code vs Cline
+  parallel_task_limit: 8             # Max parallel tasks (Claude Code)
+  
+# Customize quality gates
+quality:
+  coverage_threshold: 90             # Minimum test coverage
+  complexity_threshold: 10           # Maximum cyclomatic complexity
+  
+# Customize agent behavior  
+agents:
+  dev:
+    tdd_mode: true                   # Test-driven development
+    coverage_enforcement: strict     # Strict coverage requirements
 ```
 
 ---
@@ -339,6 +514,15 @@ A: The new `/codebase-detection` command provides enterprise-grade analysis thro
 
 **Q: How does CoaCoA handle existing code standards?**
 A: The unified analysis automatically detects existing patterns, conventions, and architectural decisions, then ensures all new code follows established practices while providing specific improvement recommendations prioritized by risk level.
+
+**Q: Why do all commands have such emphatic formatting with ALL CAPS warnings?**
+A: The recent v2.0 enhancement addresses AI consistency issues. The emphatic formatting with ALL CAPS warnings ensures that Claude Code and other AI systems follow the exact agent specifications without deviation. This prevents AI systems from improvising or taking shortcuts that could compromise code quality or workflow integrity.
+
+**Q: Do I need to update my existing CoaCoA installation to get the new command structure?**
+A: Yes, run `pip install git+https://github.com/im-shashanks/CoaCoA.git` to get the latest version with enhanced command instruction enforcement. Then run `coacoa init --claude-code` or `coacoa init --cline` in your project to update the command files.
+
+**Q: What's the difference between Claude Code and Cline execution modes?**
+A: Claude Code mode enables parallel processing where multiple analysis phases run simultaneously with automatic orchestration. Cline mode provides sequential user-controlled execution where you approve each step, offering maximum human oversight. Both modes produce identical results but with different interaction patterns.
 
 ---
 

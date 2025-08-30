@@ -25,15 +25,15 @@ outputs:
   - "Updated story file footer & QA stub"
 depends_on:
   tasks:
-    - tasks/implement_story.md
+    - coacoa/tasks/implement_story.md
   templates: []
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
-    - quality/build_integrity.md
-    - quality/code_quality_gate.md
-    - quality/security_gate.md
-    - quality/performance_gate.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
+    - coacoa/quality/build_integrity.md
+    - coacoa/quality/code_quality_gate.md
+    - coacoa/quality/security_gate.md
+    - coacoa/quality/performance_gate.md
 config_keys:
   - coa.paths.*
   - coa.limits.*
@@ -87,7 +87,7 @@ Artifacts – code, tests
    - Reference `{{cfg.data.pattern_library}}` for relevant code patterns
    - Consult `{{cfg.data.style_guides}}` for formatting standards
 
-2. **Execute implementation**: Follow `tasks/implement_story.md` verbatim
+2. **Execute implementation**: Follow `coacoa/tasks/implement_story.md` verbatim
 
 3. **Pre-completion validation**:
    - Apply `{{cfg.quality.code_quality_gate}}` checklist (CQ-1 through CR-5)

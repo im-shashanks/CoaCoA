@@ -13,7 +13,7 @@ purpose: >
 inputs:
   - "(greenfield) {{cfg.file_prefixes.domain_doc}}*.md"
   - "(brownfield) {{cfg.paths.analysis}}"
-  - "templates/ui_ux.md"
+  - "coacoa/templates/ui_ux.md"
   - "{{cfg.data.tech_preferences}}"
 outputs:
   - "{{cfg.prd.main}}"
@@ -21,13 +21,13 @@ outputs:
   - "{{cfg.docs.prd.shard_dir}}/{{cfg.file_prefixes.epic}}*.md"
 depends_on:
   tasks:
-    - tasks/generate_prd.md
+    - coacoa/tasks/generate_prd.md
   templates:
-    - templates/prd.md
-    - templates/epic.md
+    - coacoa/templates/prd.md
+    - coacoa/templates/epic.md
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.prd.*
   - coa.paths.*
@@ -76,7 +76,7 @@ Artifacts – PRD, epics
 2. **Technology alignment**  
    Review `{{cfg.data.tech_preferences}}` to understand approved technology stack and constraints.
 
-3. **Run Task** – follow every step in `tasks/generate_prd.md`.
+3. **Run Task** – follow every step in `coacoa/tasks/generate_prd.md`.
 
 4. **Self-validate**  
    * Anti-Hallucination (H-1–H-12, P-1–P-6, S-1–S-8, M-1–M-8, D-1–D-6)  

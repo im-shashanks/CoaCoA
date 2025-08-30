@@ -2,7 +2,7 @@
 _Called by: Architect agent_
 
 ## ADR template reference
-`templates/adr.md`
+`coacoa/templates/adr.md`
 
 **When to create**  
 – Any decision that is costly to reverse, visible to many devs, or influences future choices.
