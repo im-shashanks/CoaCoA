@@ -37,7 +37,7 @@ _Assigned to: scrum-master agent_
 
 ---
 
-## 2 · Story structure (`templates/story.md`)
+## 2 · Story structure (`coacoa/templates/story.md`)
 
 * Front-matter keys:
   * `story_id`

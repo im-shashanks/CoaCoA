@@ -25,15 +25,15 @@ outputs:
 
 depends_on:
   tasks:
-  - tasks/analyze_codebase.md             # Unified analysis workflow
+  - coacoa/tasks/analyze_codebase.md             # Unified analysis workflow
 
   templates:
-  - templates/codebase_analysis_master.md # Analysis methodology
-  - templates/analysis_plan_template.md   # Plan structure
+  - coacoa/templates/codebase_analysis_master.md # Analysis methodology
+  - coacoa/templates/analysis_plan_template.md   # Plan structure
 
   checks:
-  - quality/link_integrity.md
-  - quality/anti_hallucination.md
+  - coacoa/quality/link_integrity.md
+  - coacoa/quality/anti_hallucination.md
 
 config_keys:
 - coa.paths.*
@@ -52,11 +52,11 @@ in extreme detail to encompass all the information required for future builds.
 
 ### CRITICAL FOR CLAUDE CODE: SEQUENTIAL PARALLEL EXECUTION PROTOCOL
 
-**MANDATORY PRE-EXECUTION CHECKLIST (Claude Code):**
+**MANDATORY PRE-EXECUTION CHECKLIST:**
 Before any analysis, CONFIRM these files exist and are readable:
 - [ ] `coacoa/coacoa.yaml` (configuration)
-- [ ] `tasks/analyze_codebase.md` (task instructions)
-- [ ] `templates/codebase_analysis_master.md` (master template)
+- [ ] `coacoa/tasks/analyze_codebase.md` (task instructions)
+- [ ] `coacoa/templates/codebase_analysis_master.md` (master template)
 
 **IF ANY FILE IS MISSING:** Stop and report "Framework files not detected - run 'coacoa init' first"
 **ONLY PROCEED** if all files confirmed present.
@@ -64,7 +64,7 @@ Before any analysis, CONFIRM these files exist and are readable:
 **IF YOU ARE CLAUDE CODE, YOU MUST:**
 1. **VALIDATE FRAMEWORK FILES** using checklist above - DO NOT SKIP
 2. Read `coacoa/coacoa.yaml` for configuration first
-3. Read `tasks/analyze_codebase.md` and follow the "Claude Code (Sequential Parallel Mode)" instructions exactly
+3. Read `coacoa/tasks/analyze_codebase.md` and follow the "Claude Code (Sequential Parallel Mode)" instructions exactly
 4. Generate master plan using template, then launch **1 Task at a time** for each phase
 5. **Wait for Task completion** before proceeding to next phase
 6. DO NOT do generic "analyze codebase structure" - follow the structured 7-phase methodology only
@@ -99,7 +99,7 @@ Artifacts – intelligence JSONs
 - Read `coacoa/coacoa.yaml` to load all configuration values
 
 **Step 2: Read Task Instructions**  
-- Read `tasks/analyze_codebase.md` completely
+- Read `coacoa/tasks/analyze_codebase.md` completely
 - Locate "Claude Code (Sequential Parallel Mode)" section
 - Follow those instructions exactly - no generic analysis
 
@@ -126,7 +126,7 @@ Artifacts – intelligence JSONs
 
 3. **Execute Unified Analysis Task**
 
-* **READ AND FOLLOW** `tasks/analyze_codebase.md` - do not proceed with generic analysis
+* **READ AND FOLLOW** `coacoa/tasks/analyze_codebase.md` - do not proceed with generic analysis
 * This contains the complete unified workflow with Claude Code sequential parallel mode instructions
 * Generate master plan first, then launch 1 Task tool per phase with completion waiting
 * Follow all numbered steps exactly as specified in the task file  
@@ -143,8 +143,8 @@ Artifacts – intelligence JSONs
 
 5. **Self-validate**
 
-* Apply quality/link_integrity.md (items L-1…L-11).
-* Apply quality/anti_hallucination.md (items H-1…H-12, P-1–P-6, S-1–S-8, M-1–M-8, D-1–D-6).
+* Apply coacoa/quality/link_integrity.md (items L-1…L-11).
+* Apply coacoa/quality/anti_hallucination.md (items H-1…H-12, P-1–P-6, S-1–S-8, M-1–M-8, D-1–D-6).
 * Verify analysis consistency with `{{cfg.data.language_rules}}` standards.
 
 6. **On success**

@@ -13,18 +13,18 @@ purpose: >
 
 inputs:
   - "coacoa.yaml"
-  - "workflows/*.yml"
+  - "coacoa/workflows/*.yml"
 outputs:
   - "orchestrator_log.md"      # run history
 depends_on:
   tasks:
-    - tasks/manage_story_branch.md
-    - tasks/build_gate.md       # tiny helper—run build/test quickly
-    - tasks/parse_dependencies.md
+    - coacoa/tasks/manage_story_branch.md
+    - coacoa/tasks/build_gate.md       # tiny helper—run build/test quickly
+    - coacoa/tasks/parse_dependencies.md
   templates: []
   checks:
-    - quality/build_integrity.md
-    - quality/link_integrity.md
+    - coacoa/quality/build_integrity.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.workflows.*
   - coa.paths.*
@@ -48,7 +48,7 @@ You drive the entire pipeline, stage by stage, and guarantee branch hygiene.
 8. Launch each agent stage (Dev, QA, …) in a **new session context** to prevent token bleed. For parallel stories allocate separate sessions per story.
 
 ### Dependency Handling
-• Uses `tasks/parse_dependencies.md` once per run to build `epic_blockers`.  
+• Uses `coacoa/tasks/parse_dependencies.md` once per run to build `epic_blockers`.  
 • A story is eligible when:
   - `story.status == "TODO"`
   - every `depends_on` story is DONE
@@ -80,7 +80,7 @@ Parse the text that follows the trigger (`/orchestrator …`) with this grammar
 # Execution Instructions
 
 0. **Parse Dependencies**  
-   * Call `tasks/parse_dependencies.md` to produce an in‑memory dict `epic_blockers`.  
+   * Call `coacoa/tasks/parse_dependencies.md` to produce an in‑memory dict `epic_blockers`.  
    * Load `story_map` (all story files) and `epic_status` (DONE / TODO).
 
 1. **Load Workflow**  
@@ -92,7 +92,7 @@ Parse the text that follows the trigger (`/orchestrator …`) with this grammar
    * If none found → log “⏳ Waiting: unresolved dependencies” and EXIT.
 
 3. **For each story in backlog**  
-   1. Call `tasks/manage_story_branch.md` → creates/ switches branch.  
+   1. Call `coacoa/tasks/manage_story_branch.md` → creates/ switches branch.  
    2. Execute stages sequentially (`dev`, `qa`) with logs.
       **Note**: Each dev and qa sessions should be opened as *New Session* to minimize context bleed.  
    3. On `FAILED …`, insert log block and stop.

@@ -29,7 +29,7 @@ Load `coacoa/coacoa.yaml` for analysis settings:
    - `coacoa/context/analysis/consolidated/`
 
 2. **Use template to generate plan:**
-   - Read `templates/codebase_analysis_master.md`
+   - Read `coacoa/templates/codebase_analysis_master.md`
    - Create comprehensive plan at `coacoa/context/analysis/plan.md`
    - Plan contains 7 analysis phases with detailed instructions
    - Each phase specifies required outputs and completion criteria
@@ -59,8 +59,8 @@ Execute phases one at a time based on plan.md:
 **MANDATORY: Validate Framework Files First**
 Before proceeding, confirm these files exist and are readable:
 - [ ] `coacoa/coacoa.yaml` (configuration) 
-- [ ] `tasks/analyze_codebase.md` (this task file)
-- [ ] `templates/codebase_analysis_master.md` (master template)
+- [ ] `coacoa/tasks/analyze_codebase.md` (this task file)
+- [ ] `coacoa/templates/codebase_analysis_master.md` (master template)
 
 If any file missing: **STOP** and report "Framework not properly installed"
 

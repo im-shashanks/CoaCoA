@@ -63,7 +63,7 @@ Rules:
   * Greenfield → one epic per MVP feature or UI flow.  
   * Brownfield → one epic per hotspot cluster or architectural layer.  
 * Each epic has ≤ 7 acceptance-criteria bullets.  
-* Store each epic in its own Markdown file using **`templates/epic.md`** (see below) inside `{{cfg.prd.shard_dir}}/`.
+* Store each epic in its own Markdown file using **`coacoa/templates/epic.md`** (see below) inside `{{cfg.prd.shard_dir}}/`.
 
 ---
 

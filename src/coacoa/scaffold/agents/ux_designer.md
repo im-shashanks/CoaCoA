@@ -19,10 +19,10 @@ outputs:
 depends_on:
   tasks: []
   templates:
-    - templates/ui_ux.md
+    - coacoa/templates/ui_ux.md
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.templates.ui_ux
   - coa.limits.max_snippet_loc

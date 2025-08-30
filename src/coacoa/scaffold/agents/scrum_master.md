@@ -23,12 +23,12 @@ outputs:
   - "{{cfg.docs.prd.shard_dir}}/stories/{{cfg.file_prefixes.story}}*.md"
 depends_on:
   tasks:
-    - tasks/generate_stories.md
+    - coacoa/tasks/generate_stories.md
   templates:
-    - templates/story.md
+    - coacoa/templates/story.md
   checks:
-    - quality/anti_hallucination.md
-    - quality/link_integrity.md
+    - coacoa/quality/anti_hallucination.md
+    - coacoa/quality/link_integrity.md
 config_keys:
   - coa.limits.*
   - coa.file_prefixes.*
@@ -62,6 +62,6 @@ Artifacts – stories
 
 # Execution Instructions
 
-1. Execute `tasks/generate_stories.md`.  
+1. Execute `coacoa/tasks/generate_stories.md`.  
 2. Self-validate via checklists.  
 3. Emit `COMPLETED generate_stories` or failure string.
