@@ -19,7 +19,8 @@ outputs:
   - "{{cfg.paths.docs_dir}}/{{cfg.file_prefixes.domain_doc}}domain_analysis.md"
 depends_on:
   tasks: []
-  templates: []
+  templates: 
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/anti_hallucination.md
     - coacoa/quality/link_integrity.md
@@ -29,6 +30,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Use parallel analysis techniques; include comprehensive domain research; leverage full context window for stakeholder analysis
+- **Cline**: Execute domain analysis sequentially; provide detailed progress updates; enable resume capability for stakeholder interviews  
+- **Generic**: Focus on critical user personas only; use minimal context; prioritize actionable insights over comprehensive analysis
 
 ### Role Description
 *You* are the first touch-point of every project.  Your deliverable is a concise,

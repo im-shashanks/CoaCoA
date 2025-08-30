@@ -6,6 +6,18 @@
 **Created**: {{timestamp}}  
 **Estimated Duration**: {{duration_estimate}}
 
+### Schema Validation Requirements
+**CRITICAL**: All JSON artifacts must validate against `coacoa/schemas/artifact_schemas.json`
+
+**Required Artifact-Schema Mappings**:
+- `repo-intelligence.json` → `repository_intelligence_schema`
+- `build-info.json` → `build_analysis_schema`
+- `architecture.json` → `architecture_analysis_schema`
+- `complexity.json` → `complexity_analysis_schema`
+- `security-analysis.json` → `security_analysis_schema`
+- `git-analysis.json` → `git_analysis_schema`
+- `performance-analysis.json` → `performance_analysis_schema`
+
 ---
 
 ## Executive Summary

@@ -21,7 +21,8 @@ depends_on:
     - coacoa/tasks/manage_story_branch.md
     - coacoa/tasks/build_gate.md       # tiny helper—run build/test quickly
     - coacoa/tasks/parse_dependencies.md
-  templates: []
+  templates:
+    - coacoa/templates/model_adaptation.md
   checks:
     - coacoa/quality/build_integrity.md
     - coacoa/quality/link_integrity.md
@@ -33,6 +34,19 @@ config_keys:
 greenfield_behavior: true
 brownfield_behavior: true
 ---
+
+### AI Environment Adaptation
+**CRITICAL: Execute environment detection before proceeding with agent instructions.**
+
+1. **Detect AI environment** using model_adaptation.md protocol
+2. **Apply appropriate token allocation** based on detected environment  
+3. **Use model-specific instruction format** for optimal performance
+4. **Adjust analysis depth** based on context window limitations
+
+**Environment-Specific Behavior**:
+- **Claude Code**: Enable parallel task management across multiple stories, utilize comprehensive build gate validation, maintain detailed orchestrator logs with full session tracking
+- **Cline**: Focus on sequential execution with streamlined logging, prioritize essential gate checks, manage single-story workflows efficiently
+- **Generic**: Use conservative resource allocation, implement basic sequential processing, maintain minimal but effective logging
 
 ### Role Description
 You drive the entire pipeline, stage by stage, and guarantee branch hygiene.

@@ -1,5 +1,8 @@
 # Progress Tracking Template
 
+### Schema Validation Protocol
+**Before marking any task complete**: Validate all generated JSON artifacts against `coacoa/schemas/artifact_schemas.json`
+
 ## Status Update Instructions
 
 This template provides standardized status update patterns for maintaining consistency across both Claude Code and Cline workflows.
